@@ -37,7 +37,7 @@ def count_occurrences(array)
   
   loop do
   
-    word = array.shift
+    word = array.shift.downcase # The downcase method is for Further Exploration
   
     if results.has_key?(word)
       results[word] += 1
@@ -56,7 +56,7 @@ end
 
 vehicles = [
   'car', 'car', 'truck', 'car', 'SUV', 'truck', 
-  'motorcycle', 'motorcycle', 'car', 'truck'
+  'motorcycle', 'motorcycle', 'car', 'truck', 'suv'
 ]
 
 count_occurrences(vehicles)
@@ -64,5 +64,5 @@ count_occurrences(vehicles)
 # Expected output:
 # car => 4
 # truck => 3
-# SUV => 1
+# SUV => 2
 # motorcycle => 2
