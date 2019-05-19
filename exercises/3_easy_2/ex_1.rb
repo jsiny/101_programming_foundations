@@ -25,7 +25,7 @@
 def how_old_is_teddy
   puts "What's this person's name?"
   name = gets.chomp
-  name = "Teddy" if name == ""
+  name = "Teddy" if name.empty?
   age = rand(20..200)
   puts "#{name} is #{age} years old!"
 end
