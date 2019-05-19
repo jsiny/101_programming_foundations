@@ -1,3 +1,4 @@
 # Exercises I need to re-do
 
 * Ex 2.4 (How Many?) - First done: 18/05/19
+* Ex 2.7 (Stringy Strings) with *Further Exploration* - First done: 19/05/19
