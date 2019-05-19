@@ -70,7 +70,31 @@ END
 every other element
 
 
-I don't understand this assessment.
+Example:
+- input: [1, 2, 3, 4]
+- output: [2, 4]
 
+- Given an array of integers
+- Iterate through this given array 
+  - For index = even, skip the integer
+  - For index = odd, push this integer to a new array
+- Print the new array
+
+---------------------------
+
+START
+
+SET initial_array = an array of integer
+SET result_array = an empty array
+
+LOOP through initial_array
+  IF index is even then skip this iteration (next)
+  ELSE push the integer to result_array
+  END
+END
+
+PRINT result_array
+
+END
 
 =end
