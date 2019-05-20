@@ -1,0 +1,18 @@
+en:
+  welcome: "Welcome to Calculator! Enter your name:"
+  valid_name: "Make sure to use a valid name!"
+  first_number: "What's the first number?"
+  valid_number: "Hmmm... Something doesn't look right"
+  second_number: "What's the second number?"
+  valid_operator: "You must choose 1, 2, 3 or 4"
+  processing: " the two numbers..."
+  again: "Do you want to perform another calculation? (Y to calculate again)"
+fr:
+  welcome: "Bienvenue sur la Calculette! Entrez votre nom:"
+  valid_name: "Merci d'entrer un nom valide !"
+  first_number: "Quel est le premier nombre ?"
+  valid_number: "Quelque chose ne va pas..."
+  second_number: "Quel est le deuxième nombre ?"
+  valid_operator: "Vous devez choisir entre 1, 2, 3 ou 4"
+  processing: " les deux nombres..."
+  again: "Souhaitez-vous réaliser une autre opération ? (Tapez Y si oui)"

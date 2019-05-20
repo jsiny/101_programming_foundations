@@ -1,27 +1,39 @@
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 def prompt(message)
-  puts "=># #{message}"
+  puts "==> #{message}"
 end
 
-def valid_number?(num)
-  num.to_i != 0
+def integer?(num)
+  num.to_i.to_s == num
+end
+
+def float?(num)
+  /\d/.match(num) && /^\d*\.?\d*$/.match(num)
+end
+
+def number?(num)
+  integer?(num) || float?(num)
 end
 
 def operation_to_message(op)
-  case op
-  when '1' then "Adding"
-  when '2' then 'Substracting'
-  when '3' then "Multiplying"
-  when '4' then 'Dividing'
-  end
+  operation = case op
+              when '1' then "Adding"
+              when '2' then 'Substracting'
+              when '3' then "Multiplying"
+              when '4' then 'Dividing'
+              end
+  operation
 end
 
-prompt "Welcome to Calculator! Enter your name:"
+prompt(MESSAGES['welcome'])
 
 name = ''
 loop do
   name = gets.chomp
   if name.empty?
-    prompt "Make sure to use a valid name!"
+    prompt(MESSAGES["valid_name"])
   else
     break
   end
@@ -32,25 +44,19 @@ prompt "Hi #{name}!"
 loop do # main loop
   number1 = ''
   loop do
-    prompt "What's the first number?"
+    prompt(MESSAGES['first_number'])
     number1 = gets.chomp
-    if valid_number?(number1)
-      break
-    else
-      prompt "Hmmm... Something doesn't look right"
-    end
+    break if number?(number1)
+    prompt(MESSAGES['valid_number'])
   end
 
   number2 = ''
 
   loop do
-    prompt "What's the second number?"
+    prompt(MESSAGES['second_number'])
     number2 = gets.chomp
-    if valid_number?(number2)
-      break
-    else
-      prompt "Hmmm... Something doesn't look right"
-    end
+    break if number?(number2)
+    prompt(MESSAGES['valid_number'])
   end
 
   operator_prompt = <<-MSG
@@ -69,11 +75,11 @@ What operation would you like to perform?
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt "Must choose 1, 2, 3 or 4"
+      prompt(MESSAGES['valid_operator'])
     end
   end
 
-  prompt "#{operation_to_message(operator)} the two numbers..."
+  prompt operation_to_message(operator) + MESSAGES['processing']
 
   result =  case operator
             when '1'
@@ -87,7 +93,7 @@ What operation would you like to perform?
             end
 
   prompt "The result is #{result}"
-  prompt "Do you want to perform another calculation? (Y to calculate again)"
+  prompt(MESSAGES['again'])
   answer = gets.chomp
 
   break unless answer.downcase.start_with?('y')
