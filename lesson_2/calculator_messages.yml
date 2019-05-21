@@ -1,18 +1,51 @@
 en:
   welcome: "Welcome to Calculator! Enter your name:"
+  hello: "Hi %{name}"
   valid_name: "Make sure to use a valid name!"
   first_number: "What's the first number?"
   valid_number: "Hmmm... Something doesn't look right"
   second_number: "What's the second number?"
   valid_operator: "You must choose 1, 2, 3 or 4"
-  processing: " the two numbers..."
+  processing: "%{operating} the two numbers..."
   again: "Do you want to perform another calculation? (Y to calculate again)"
+  operation: 'What operation would you like to perform
+    
+    1) add
+    
+    2) substract
+    
+    3) multiply
+    
+    4) divide'
+  result: "The result is %{result}!"
+  adding: "Adding"
+  substracting: "Substracting"
+  multiplying: "Multiplying"
+  dividing: "Dividing"
+  thanks: "Thanks %{name} for using our Calculator!"
+
 fr:
-  welcome: "Bienvenue sur la Calculette! Entrez votre nom:"
+  welcome: "Bienvenue sur la Calculette ! Entrez votre nom:"
+  hello: "Bonjour %{name}"
   valid_name: "Merci d'entrer un nom valide !"
   first_number: "Quel est le premier nombre ?"
   valid_number: "Quelque chose ne va pas..."
   second_number: "Quel est le deuxième nombre ?"
   valid_operator: "Vous devez choisir entre 1, 2, 3 ou 4"
-  processing: " les deux nombres..."
-  again: "Souhaitez-vous réaliser une autre opération ? (Tapez Y si oui)"
+  processing: "%{operating} les deux nombres..."
+  again: "Souhaitez-vous réaliser une nouvelle opération ? (Y pour oui)"
+  operation: 'Quelle opération souhaitez-vous réaliser ?
+    
+    1) additionner
+    
+    2) soustraire
+    
+    3) multiplier
+    
+    4) diviser'
+  result: "Le résultat est %{result}!"
+  adding: "J'ajoute"
+  substracting: "Je soustrais"
+  multiplying: "Je multiplie"
+  dividing: "Je divise"
+  thanks: "Merci %{name} d'avoir utilisé la Calculette !"
