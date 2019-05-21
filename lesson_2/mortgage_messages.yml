@@ -1,0 +1,22 @@
+en:
+  welcome: 'Welcome to the Mortgage Calculator!'
+  prompt_loan: 'What is your total loan amount?'
+  error: "Hmm... Something's not quite right"
+  prompt_interest: "What is your annual percentage rate (APR)? (in %)"
+  prompt_duration: "What is your loan duration (in years)?"
+  result1: "==> The monthly price is "
+  result2: "==> The total cost of this loan is "
+  again: 'Do you want to compute your monthly payments for another loan? (Y/N)'
+  thanks: 'Thanks for using our Mortgage Calculator!'
+
+fr:
+  welcome: 'Bienvenue sur la Calculette à Emprunt !'
+  prompt_loan: 'Quel est le montant total du prêt ?'
+  error: "Quelque chose ne va pas..."
+  prompt_interest: "Quel est votre taux d'intérêt annuel ? (en %)"
+  prompt_duration: "Quelle est votre durée d'emprunt ? (en années)"
+  result1: "==> Les mensualités sont de "
+  result2: "==> Le coût total de cet emprunt est de "
+  again: "Voulez-vous calculer le montant d'un autre emprunt ? (Y/N)"
+  thanks: "Merci d'avoir utilisé la Calculette à Emprunt !"
+  

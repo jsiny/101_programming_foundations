@@ -1,90 +1,72 @@
-# Build a mortgage calculator.
+require 'yaml'
+MESSAGES = YAML.load_file('mortgage_messages.yml')
+LANGUAGE = 'fr'
 
-# You'll need three pieces of information:
-# - the loan amount
-# - the annual percentage rate (APR)
-# - the loan duration (in years)
-
-# From the above, you'll need to calculate the following two things:
-# - the monthly interest rate
-# - the loan duration in months
-
-# m = p * ( j / (1 - (1+j)**(-n)))
-# m = monthly payment
-# p = loan amount
-# j = monthly intereste rate
-# n = loan duration in months
-
-# inputs:
-# - the loan amount
-#   > positive integer
-# - the APR
-#   > should be stored as a decimal (3 % => 0.03)
-#   > should be converted into a monthly interest rate
-# - the loan duration
-#   > should be converted in the loan duration in months
-
-# outputs:
-# - the monthly interest rate
-#   > stored as a decimal (0.012)
-# - the loan duration in months
-# - the monthly loan payment
-# - (the total cost of the mortgage)
-
-# Clarifications:
-# - What if the loan duration is 5 years and 3 months? Do I assume every loan
-# duration is in years only? => I'll assume it is in full years only
-# - Do I need to validate the inputs given (nature & non-null)? => I'll assume
-# I have to
-# - Can I assume that monthly interest rate = annual rate / 12 ? It's not true
-# but it's much simpler.
-
-# Example:
-# - Loan amount = 150 000
-# - APR = 1,5 %
-# - Loan duration = 15 years
-# ---------------------------
-# - Monthly interest rate = 0.125 %
-# - Loan duration = 180 months
-# - Monthly loan payment = 931.11
-# - Total cost = 17 600.62
-
-# Algorithm:
-# - Prompts the user for a total loan amount, the APR and the loan duration,
-# and store them as three variables
-# - Computes the monthly interest rate by dividing by 12 the APR
-# - Computes the loan duration in months by multiplying the yearly duration by
-# 12
-# - Computes the monthly payment through the formula
-# - Computes the total cost by substracting the total payments and the loan 
-# amount
-
-def write(input)
-  puts "==> #{input}"
+def write(input,lang='en')
+  sentence = MESSAGES[LANGUAGE][input]
+  puts "==> #{sentence}"
 end
-
-monthly_price = ''
 
 def compute_monthly_price(loan, interest, months)
-  (loan * (interest / (1 - (1 + interest)**(-months)))).round(2)
+  (loan * (interest / (1 - (1 + interest)**-months))).round(2)
 end
 
-write "Welcome to the Mortgage Calculator!"
+def valid_integer?(input)
+  /^\d+$/.match(input)
+end
 
-write "What is your total loan amount?"
-total_amount = gets.to_i
+def valid_float?(input)
+  /\d/.match(input) && /^\d*\.?\d*$/.match(input)
+end
 
-write "What is your annual percentage rate (APR)? (in %)"
-yearly_interest_rate = gets.to_f / 100
-monthly_interest_rate = yearly_interest_rate / 12
+write 'welcome'
 
-write "What is your loan duration (in years)?"
-duration_in_years = gets.to_i
-duration_in_months = duration_in_years * 12
+loop do
+  total_amount = ''
+  monthly_interest_rate = ''
+  duration_in_months = ''
 
-monthly_price = compute_monthly_price(total_amount, monthly_interest_rate, duration_in_months)
-write "The monthly price is #{monthly_price}"
+  loop do
+    write'prompt_loan' 
+    total_amount = gets.chomp
+    break total_amount.to_i if valid_integer?(total_amount)
+    write 'error'
+  end
 
-total_paid = (monthly_price * duration_in_months).round(2)
-total_cost = (total_paid - total_amount).round(2)
-write "The total cost of this loan is #{total_cost}."
+  loop do
+    write 'prompt_interest'
+    yearly_interest_rate = gets.chomp
+    if valid_float?(yearly_interest_rate)
+      monthly_interest_rate = yearly_interest_rate.to_f / 100 / 12
+      break
+    else
+      write 'error'
+    end
+  end
+
+  loop do
+    write 'prompt_duration'
+    duration_in_years = gets.chomp
+    if valid_integer?(duration_in_years)
+      duration_in_months = duration_in_years.to_i * 12
+      break
+    else
+      write 'error'
+    end
+  end
+
+  monthly_price = compute_monthly_price(total_amount.to_i,
+                                        monthly_interest_rate,
+                                        duration_in_months)
+  puts MESSAGES[LANGUAGE]['result1'] + monthly_price.to_s
+
+  total_paid = (monthly_price * duration_in_months).round(2)
+  total_cost = (total_paid - total_amount.to_i).round(2)
+  puts MESSAGES[LANGUAGE]['result2'] + total_cost.to_s
+
+  write 'again'
+  answer = gets.chomp
+  break unless answer.start_with?('y')
+end
+
+write 'thanks'
