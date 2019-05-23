@@ -1,6 +1,6 @@
 require 'yaml'
 MESSAGES = YAML.load_file('mortgage_messages.yml')
-LANGUAGE = 'fr'
+LANGUAGE = 'en'
 
 def write(input,lang='en')
   sentence = MESSAGES[LANGUAGE][input]
