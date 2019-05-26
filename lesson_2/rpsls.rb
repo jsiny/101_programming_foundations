@@ -14,9 +14,11 @@ WINS_OVER = {
   'spock'     => %w(rock scissors)
 }
 
+NUMBER_OF_WINS = 5
+
 WELCOME_MESSAGE = <<-MSG
 WELCOME TO ROCK PAPER SCISSORS LIZARD SPOCK!
-==> You have to win 5 rounds in order to claim the title!
+==> You have to win #{NUMBER_OF_WINS} rounds in order to claim the title!
 MSG
 
 CHOICE_MESSAGE = <<-MSG
@@ -27,6 +29,9 @@ What do you choose?
 -> 'l' for lizard
 -> 'sp' for spock
 MSG
+
+POSITIVE_ANSWERS = %w(y yes oui yeah yas yep)
+NEGATIVE_ANSWERS = %w(n no nope non nah nein)
 
 def prompt(message)
   puts "==> #{message}"
@@ -59,14 +64,28 @@ def retrieve_user_choice
   end
 end
 
+def next_round(match_count)
+  prompt "Type any key when you're ready for round #{match_count + 1}"
+  gets
+end
+
 def play_again?
-  prompt 'Do you want to play again?'
-  answer = gets.chomp
-  answer.downcase.start_with?('y')
+  answer = ''
+  loop do
+    prompt 'Do you want to play again?'
+    answer = gets.chomp.downcase
+    if POSITIVE_ANSWERS.include?(answer)
+      return true
+    elsif NEGATIVE_ANSWERS.include?(answer)
+      return false
+    else
+      prompt "I didn't understand your answer"
+    end
+  end
 end
 
 def game_over?(score1, score2)
-  return true if score1 == 5 || score2 == 5
+  true if score1 == NUMBER_OF_WINS || score2 == NUMBER_OF_WINS
 end
 
 def display_winner(score1, score2)
@@ -79,36 +98,42 @@ end
 
 prompt WELCOME_MESSAGE
 
-match_count = 0
-player_wins_count = 0
-computer_wins_count = 0
-
 loop do
-  match_count += 1
-  prompt "ROUND #{match_count}!"
+  match_count = 0
+  player_wins_count = 0
+  comp_wins_count = 0
 
-  choice = retrieve_user_choice
+  loop do
+    match_count += 1
+    prompt "ROUND #{match_count}!"
 
-  computer_choice = VALID_CHOICES.values.sample
+    choice = retrieve_user_choice
 
-  prompt "You chose #{choice}; Computer chose #{computer_choice}."
+    computer_choice = VALID_CHOICES.values.sample
 
-  display_results(choice, computer_choice)
+    prompt "You chose #{choice}; Computer chose #{computer_choice}."
 
-  if win?(choice, computer_choice)
-    player_wins_count += 1
-  elsif win?(computer_choice, choice)
-    computer_wins_count += 1
-  end
+    display_results(choice, computer_choice)
 
-  prompt "SCORE: Player #{player_wins_count} - #{computer_wins_count} Computer"
+    if win?(choice, computer_choice)
+      player_wins_count += 1
+    elsif win?(computer_choice, choice)
+      comp_wins_count += 1
+    end
 
-  if game_over?(player_wins_count, computer_wins_count)
-    display_winner(player_wins_count, computer_wins_count)
-    break
+    prompt "SCORE: Player #{player_wins_count} - #{comp_wins_count} Computer"
+
+    if game_over?(player_wins_count, comp_wins_count)
+      display_winner(player_wins_count, comp_wins_count)
+      break
+    end
+
+    next_round(match_count)
+    system('clear') || system('cls')
   end
 
   break unless play_again?
+  system('clear') || system('cls')
 end
 
 prompt 'Thank you for playing and goodbye!'
