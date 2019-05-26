@@ -4,8 +4,6 @@ def real_palindrome?(original_string)
   stripped_input == reversed
 end
 
-
-
 p real_palindrome?('madam') == true
 p real_palindrome?('Madam') == true           # (case does not matter)
 p real_palindrome?("Madam, I'm Adam") == true # (only alphanumerics matter)
