@@ -8,3 +8,5 @@
 - [ ] Ex 4.5 (Squaring an Argument) with **Further Exploration** - First done: 23/05/19
 - [ ] Ex 4.9 (Palindromic Strings Part 2) with **Further Exploration** - First done: 26/05/2019
 - [ ] Ex 5.5 (Multiples of 3 and 5) with **Further Exploration** - First done: 27/05/2019
+- [ ] Ex 5.7 (Convert a String to a Number!) - First done: 27/05/2019
+- [ ] Ex 5.8 (Convert a String to a Signed Number!) with **Further Exploration** - First done: 27/05/2019
