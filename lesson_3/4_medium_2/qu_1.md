@@ -90,7 +90,10 @@ puts "c_outer is #{c_outer} with an id of: #{c_outer_id} before the block."
 puts "d_outer is #{d_outer} with an id of: #{d_outer_id} before the block."
 ```
 
-Which outputs:
+Note that `a_outer` and `d_outer` are identical as they both refer to `42`.
+As such, they should have the same `x_outer_id`.
+
+This program outputs:
 
 ```
 a_outer is 42 with an id of: 85 before the block.
@@ -100,7 +103,8 @@ d_outer is 42 with an id of: 85 before the block.
 ```
 
 Nothing too surprising here. We simply obtain the object IDs of the 4 objects under scrutiny,
-and outputs them using string interpolation.
+and outputs them using string interpolation. Additionally, we do obtain the same ID for
+`a_outer` and `d_outer`.
 
 ### 2. Inside the block:
 
@@ -147,6 +151,8 @@ puts "d_outer inside after reassignment is #{d_outer} with an id of: #{d_outer_i
 The 4 variables `x_outer` are reassigned to 4 new values.
 As reassignment is non-mutative, we can assume that the object IDs of these variables
 have changed. Therefore, `x_outer.object_id` should have completely new values.
+Additionally, as `a_outer` and `d_outer` refer now to different objects
+(respectively `22` and `44`), their object_id should be different from now on.
 
 On the contrary, `x_object_id` should still reference the same old object IDs we had
 in stages 1 and 2. We can note that we're here using the object IDs from outside the block
@@ -247,3 +253,5 @@ ugh ohhhhh
 ugh ohhhhh
 ugh ohhhhh
 ```
+
+That's all folks!
