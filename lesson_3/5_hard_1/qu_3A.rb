@@ -1,6 +1,4 @@
-# QUESTION 3
-
-# PART A
+# QUESTION 3 / PART A
 
 def mess_with_vars(one, two, three)
   one = two
