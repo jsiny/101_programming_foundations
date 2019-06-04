@@ -12,3 +12,4 @@
 - [ ] Ex 5.8 (Convert a String to a Signed Number!) with **Further Exploration** - First done: 27/05/2019
 - [ ] Ex 6.2 (After Midnight Part 1) - First done: 30/05/2019
 - [ ] Ex 6.3 (After Midnigth Part 2) with **Further Exploration** - First done: 30/05/2019
+- [ ] Ex 7.1 (Cute angles) with **Further Exploration** - First done: 04/06/2019
