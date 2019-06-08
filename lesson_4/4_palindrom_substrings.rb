@@ -25,7 +25,6 @@ def palindrom?(string)
   string == string.reverse
 end
 
-
 def palindrom_substrings(string)
   result = []
   substrings_array = substrings(string)
@@ -41,3 +40,18 @@ p palindrom_substrings('abcddcbA')
 p palindrom_substrings('')
 p palindrom_substrings('palindrom')
 p palindrom_substrings('kayakaka')
+
+# Shorter substring method
+
+def substrings_2(string)
+  result = []
+  0.upto(string.size - 2).each do |start_idx|
+    (start_idx + 1).upto(string.size - 1) do |end_idx|
+      result << string[start_idx..end_idx]
+    end
+  end
+  result
+end
+
+p substrings_2('halo')
+p substrings_2('hello world')
