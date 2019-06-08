@@ -20,3 +20,24 @@ end
 
 p substrings('halo')
 p substrings('hello world')
+
+def palindrom?(string)
+  string == string.reverse
+end
+
+
+def palindrom_substrings(string)
+  result = []
+  substrings_array = substrings(string)
+  substrings_array.each do |substr|
+    result << substr if palindrom?(substr)
+  end
+
+  result
+end
+
+p palindrom_substrings('supercalifragilisticexpialidocious')
+p palindrom_substrings('abcddcbA')
+p palindrom_substrings('')
+p palindrom_substrings('palindrom')
+p palindrom_substrings('kayakaka')
