@@ -16,3 +16,16 @@ arr = [1, 2, 3, 4, 5]
 p result = reverse(arr)
 p arr
 p arr.object_id != result.object_id
+
+# Another quicker method
+
+def reverse_2(array)
+  mirror = []
+  array.reverse_each { |n| mirror << n }
+  mirror
+end
+
+arr = [1, 2, 3, 4]
+p result = reverse_2(arr)
+p arr
+p arr.object_id != result.object_id
