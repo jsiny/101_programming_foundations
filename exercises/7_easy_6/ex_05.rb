@@ -1,4 +1,4 @@
-def reverse!(array)
+def reverse(array)
   mirror = Array.new(array.size)
   left_idx = 0
   right_idx = -1
@@ -13,6 +13,6 @@ def reverse!(array)
 end
 
 arr = [1, 2, 3, 4, 5]
-p result = reverse!(arr)
+p result = reverse(arr)
 p arr
 p arr.object_id != result.object_id
