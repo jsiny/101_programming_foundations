@@ -18,3 +18,12 @@ p find_dup([18, 9, 36, 96, 31, 19, 54, 75, 42, 15,
             40, 23, 71, 62, 73, 32, 43, 24,  4, 56,
             7,  34, 57, 74, 45, 11, 88, 67,  5, 58]) == 73
 p find_dup([3, 9, 3, 4, 8]) == 3
+
+# Quicker solution
+
+def find_dup_2(array)
+  array.find { |n| array.count(n) == 2 }
+end
+
+p find_dup_2([1, 5, 3, 1]) == 1
+p find_dup_2([3, 9, 3, 4, 8]) == 3
