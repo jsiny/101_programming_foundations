@@ -4,3 +4,11 @@ end
 
 triangle(5)
 triangle(9)
+
+# Further exploration
+
+def triangle_upside_down(size)
+  (0..(size - 1)).each { |white| puts '*' * (size - white) + ' ' * white }
+end
+
+triangle_upside_down(5)
