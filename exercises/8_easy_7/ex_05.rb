@@ -2,11 +2,7 @@ def staggered_case(string)
   sentence = []
 
   string.chars.each_with_index do |char, i|
-    sentence << if char =~ /[a-zA-Z]/
-                  i.even? ? char.upcase : char.downcase
-                else
-                  char
-                end
+    sentence << (i.even? ? char.upcase : char.downcase)
   end
 
   sentence.join
