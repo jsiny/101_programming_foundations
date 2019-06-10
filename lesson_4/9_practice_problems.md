@@ -134,5 +134,58 @@ evaluates to `true` at least once.
 This code only outputs `1` (`puts num`) because the execution is stopped as soon
 as the block returns `true`.
 
-## . Practice Problem
-## . Practice Problem
+## 8. Practice Problem 8
+
+How does `take` work? Is it destructive? How can we find out?
+
+```ruby
+arr = [1, 2, 3, 4, 5]
+arr.take(2)
+```
+
+According to the [Ruby documentation](https://docs.ruby-lang.org/en/2.6.0/Array.html#method-i-take),
+`take` returns the first `n` elements from the array (without modifying the
+initial array).
+
+In this case, `arr.take(2)` returns `[1, 2]`.
+
+## 9. Practice Problem 9
+
+What is the value of `map` in the following code? Why?
+
+```ruby
+{ a: 'ant', b: 'bear' }.map do |key, value|
+  if value.size > 3
+    value
+  end
+end
+```
+
+`map` returns an array transformed by the block.
+Here, the block returns `nil` the first time (as `'ant'.size <= 3`) and `true`
+the second time (`'bear'.size > 3`).
+Therefore, the `map` method returns `[nil, 'bear']`.
+
+## 10. Practice Problem 10
+
+What is the return value of the following code? Why?
+
+```ruby
+[1, 2, 3].map do |num|
+  if num > 1
+    puts num
+  else
+    num
+  end
+end
+```
+
+`map` returns an array transformed by the block's return value.
+
+What is the block's return value?
+* For `num = 1`: the `if` statement returns `1`, therefore this value is
+added to the return value.
+* For `num = 2` or `3`: the if statement prints `num` and returns `nil`,
+therefore the value added to the result array is `nil`.
+
+Therefore, `map` returns `[1, nil, nil]`.
