@@ -1,5 +1,4 @@
-def staggered_case(string)
-  sentence = []
+def change_caps_according_to_index(string, sentence)
   i = 0
 
   string.chars.each do |char|
@@ -10,7 +9,12 @@ def staggered_case(string)
                   char
                 end
   end
+  sentence
+end
 
+def staggered_case(string)
+  sentence = []
+  change_caps_according_to_index(string, sentence)
   sentence.join
 end
 
