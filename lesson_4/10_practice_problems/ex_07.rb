@@ -15,3 +15,15 @@ statement.chars.each do |char|
 end
 
 p letters
+
+# Other method (with alphabetical order)
+
+alphabet = ('A'..'Z').to_a + ('a'..'z').to_a
+result = {}
+
+alphabet.each do |a|
+  frequency = statement.scan(a).count
+  result[a] = frequency if frequency > 0
+end
+
+p result
