@@ -6,14 +6,12 @@ munsters = {
   'Marilyn' => { 'age' => 23, 'gender' => 'female' }
 }
 
-munsters.each_key do |name|
-  person = munsters[name]
-
-  person['age_group'] = case person['age']
-                        when (0..17) then 'kid'
-                        when (18..64) then 'adult'
-                        else 'senior'
-                        end
+munsters.each_value do |details|
+  details['age_group'] =  case details['age']
+                          when (0..17) then 'kid'
+                          when (18..64) then 'adult'
+                          else 'senior'
+                          end
 end
 
 p munsters
