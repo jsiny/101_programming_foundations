@@ -1,36 +1,47 @@
-def substrings_at_start(string)
-  substrings = []
-  0.upto(string.size - 1) { |index| substrings << string[0..index].downcase }
-  substrings
-end
-
-def substrings(string)
-  total_substrings = []
-  alpha_only = string.chars.delete_if { |char| char =~ /[^a-z0-9]/i }.join
-  alpha_only.chars.each_index do |index|
-    current_string = alpha_only[index..-1]
-    total_substrings += substrings_at_start(current_string)
+def fizzbuzz(start_num, end_num)
+  result = []
+  start_num.upto(end_num) do |num|
+    result << add_value_depending_on_divisibility(num)
   end
-  total_substrings
+  p result.join(', ')
 end
 
-def palindromes(string)
-  total_substrings = substrings(string)
-  palindroms = []
-  total_substrings.each do |substr|
-    next if substr.size < 2
-    palindroms << substr if substr == substr.reverse
+def divisible_by?(divisor, num)
+  (num % divisor).zero?
+end
+
+def add_value_depending_on_divisibility(num)
+  if divisible_by?(3, num) && divisible_by?(5, num)
+    'FizzBuzz'
+  elsif divisible_by?(3, num)
+    'Fizz'
+  elsif divisible_by?(5, num)
+    'Buzz'
+  else
+    num
   end
-  palindroms
 end
 
-p palindromes('abcd')  == []
-p palindromes('madam') == %w(madam ada)
-p palindromes('hello-madam-did-madam-goodbye') == %w(
-  ll madam madamdidmadam ada
-  adamdidmada damdidmad amdidma mdidm did
-  madam ada oo
-)
-p palindromes('knitting cassettes') == %w(nittin itti tt ss settes ette tt)
-p palindromes('hel!lo-Mad_am-1did1-ma22dam-go_od-$bye-')
-# => ["ll", "Madam", "ada", "am1did1ma", "m1did1m", "1did1", "did", "22", "oo"]
+fizzbuzz(1, 15)
+# -> 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz
+
+# By using a case statement (cleaner)
+
+def fizzbuzz_value(num)
+  case
+  when divisible_by?(3, num) && divisible_by?(5, num) then 'FizzBuzz'
+  when divisible_by?(3, num) then 'Fizz'
+  when divisible_by?(5, num) then 'Buzz'
+  else num
+  end
+end
+
+def fizzbuzz_2(start_num, end_num)
+  result = []
+  start_num.upto(end_num) do |num|
+    result << fizzbuzz_value(num)
+  end
+  p result.join(', ')
+end
+
+fizzbuzz_2(1, 15)
