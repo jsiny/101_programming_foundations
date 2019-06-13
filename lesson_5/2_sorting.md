@@ -43,4 +43,3 @@ In case of identical elements, the longest array is the greatest.
 Usually, comparing strings with integers would raise an ArgumentError.
 In this present case, the integers are never evaluated by themselves and
 no error is raised.
-
