@@ -131,3 +131,54 @@ If we used `any?` instead of `all?` in line 2, the return value of `select`
 would be the new array `[{ a: 'ant', b: 'elephant' }, { c: 'cat' }]`, because
 `hash.any?` would return `true` for both iterations (as there is at least one
 element returning `true`  in the inner block execution).
+
+## 8. Example 8
+
+```ruby
+[[8, 13, 27], ['apple', 'banana', 'cantaloupe']].map do |arr|
+  arr.select do |item|
+    if item.to_s.to_i == item    # if it's an integer
+      item > 13
+    else
+      item.size < 6
+    end
+  end
+end
+# => [[27], ["apple"]]
+```
+
+| Line | Action                 | Object                                | Side Effect | Return Value | Is Return Value used?                                       |
+| ---- | ---------------------- | ------------------------------------- | ----------- | ------------ | ----------------------------------------------------------- |
+| 1    | method call (`map`)    | The original array                    | None        | A new array  | No                                                          |
+| 1-9  | outer block execution  | Each sub-array                        | None        | A new array  | Yes, to determine `map`'s return value                      |
+| 2    | method call (`select`) | Each sub-array                        | None        | A new array  | Yes, to determine the outer block's return value            |
+| 2-8  | inner block execution  | Each sub-array                        | None        | Boolean      | Yes, to determine `select`'s return value                   |
+| 3    | comparison (`==`)      | Each element in the sub-array         | None        | Boolean      | Yes, for the conditional `if/else` statement                |
+| 3-7  | conditional `if/else`  | Each element in the sub-array         | None        | Boolean      | Yes, to determine the inner block's return value            |
+| 4    | comparison (`>`)       | Each integer element in the sub-array | None        | Boolean      | Yes, to determine the conditional `if/else` 's return value |
+| 6    | method call (`size`)   | Each string element in the sub-array  | None        | An integer   | Yes, for the comparison in line 6                           |
+| 6    | comparison (`<`)       | Each string element in the sub-array  | None        | Boolean      | Yes, to determine the conditional `if/else` 's return value |
+
+## 9. Example 9
+
+```ruby
+[[[1], [2], [3], [4]], [['a'], ['b'], ['c']]].map do |element1|
+  element1.each do |element2|
+    element2.partition do |element3|
+      element3.size > 0
+    end
+  end
+end
+# => [[[1], [2], [3], [4]], [["a"], ["b"], ["c"]]]
+```
+
+| Line | Action                    | Object                                            | Side Effect | Return Value                         | Is Return Value used?                      |
+| ---- | ------------------------- | ------------------------------------------------- | ----------- | ------------------------------------ | ------------------------------------------ |
+| 1    | method call (`map`)       | The original array                                | None        | A new array                          | No                                         |
+| 1-7  | outer block execution     | Each sub-array                                    | None        | The original sub-arrays              | Yes, by `map` to perform transformation    |
+| 2    | method call `each`        | Each sub-array                                    | None        | The original collection (sub-array)  | Yes, to define outer block's return value  |
+| 2-6  | middle block execution    | Each element (array) in the sub-array             | None        | 2 arrays                             | No                                         |
+| 3    | method call (`partition`) | Each element (array) in the sub-array             | None        | 2 arrays: true_array and false_array | Yes, to define middle block's return value |
+| 3-5  | inner block execution     | Each object inside the array inside the sub-array | None        | Boolean                              | Yes, by `partition` to perform selection   |
+| 4    | method call (`size`)      | Each object inside the array inside the sub-array | None        | An integer                           | Yes, to perform comparison                 |
+| 4    | comparison (`>`)          | Each object inside the array inside the sub-array | None        | Boolean                              | Yes, to define inner block's return value  |
