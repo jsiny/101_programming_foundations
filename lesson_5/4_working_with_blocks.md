@@ -172,13 +172,47 @@ end
 # => [[[1], [2], [3], [4]], [["a"], ["b"], ["c"]]]
 ```
 
-| Line | Action                    | Object                                            | Side Effect | Return Value                         | Is Return Value used?                      |
-| ---- | ------------------------- | ------------------------------------------------- | ----------- | ------------------------------------ | ------------------------------------------ |
-| 1    | method call (`map`)       | The original array                                | None        | A new array                          | No                                         |
-| 1-7  | outer block execution     | Each sub-array                                    | None        | The original sub-arrays              | Yes, by `map` to perform transformation    |
-| 2    | method call `each`        | Each sub-array                                    | None        | The original collection (sub-array)  | Yes, to define outer block's return value  |
-| 2-6  | middle block execution    | Each element (array) in the sub-array             | None        | 2 arrays                             | No                                         |
-| 3    | method call (`partition`) | Each element (array) in the sub-array             | None        | 2 arrays: true_array and false_array | Yes, to define middle block's return value |
-| 3-5  | inner block execution     | Each object inside the array inside the sub-array | None        | Boolean                              | Yes, by `partition` to perform selection   |
-| 4    | method call (`size`)      | Each object inside the array inside the sub-array | None        | An integer                           | Yes, to perform comparison                 |
-| 4    | comparison (`>`)          | Each object inside the array inside the sub-array | None        | Boolean                              | Yes, to define inner block's return value  |
+| Line | Action                    | Object                                            | Side Effect | Return Value                                           | Is Return Value used?                      |
+| ---- | ------------------------- | ------------------------------------------------- | ----------- | ------------------------------------------------------ | ------------------------------------------ |
+| 1    | method call (`map`)       | The original array                                | None        | A new array with the same values as the original array | No                                         |
+| 1-7  | outer block execution     | Each sub-array                                    | None        | The original sub-arrays                                | Yes, by `map` to perform transformation    |
+| 2    | method call `each`        | Each sub-array                                    | None        | The original collection (sub-array)                    | Yes, to define outer block's return value  |
+| 2-6  | middle block execution    | Each element (array) in the sub-array             | None        | 2 arrays                                               | No                                         |
+| 3    | method call (`partition`) | Each element (array) in the sub-array             | None        | 2 arrays: true_array and false_array                   | Yes, to define middle block's return value |
+| 3-5  | inner block execution     | Each object inside the array inside the sub-array | None        | Boolean                                                | Yes, by `partition` to perform selection   |
+| 4    | method call (`size`)      | Each object inside the array inside the sub-array | None        | An integer                                             | Yes, to perform comparison                 |
+| 4    | comparison (`>`)          | Each object inside the array inside the sub-array | None        | Boolean                                                | Yes, to define inner block's return value  |
+
+## 10. Example 10
+
+```ruby
+[[[1, 2], [3, 4]], [5, 6]].map do |arr|
+  arr.map do |el|
+    if el.to_s.size == 1    # it's an integer
+      el + 1
+    else                    # it's an array
+      el.map do |n|
+        n + 1
+      end
+    end
+  end
+end
+
+# => [[[2, 3], [4, 5]], [6, 7]]
+```
+
+| Line | Action                            | Object                                                       | Side Effect | Return Value                               | Is Return Value used?                                   |
+| ---- | --------------------------------- | ------------------------------------------------------------ | ----------- | ------------------------------------------ | ------------------------------------------------------- |
+| 1    | method call (`map`)               | The original array                                           | None        | A new array: `[[[2, 3], [4, 5]], [ 5, 6]]` | No                                                      |
+| 1-11 | outer block execution             | Each sub-array                                               | None        | A new array                                | Yes, by top-level `map` to perform transformation       |
+| 2    | method call (`map`)               | Each sub-array                                               | None        | A new array                                | Yes, to define the outer block's return value           |
+| 2-10 | middle block execution            | Each element in the sub-array (array or integer)             | None        | New integers and new arrays                | Yes, by middle-level `map` to perform transformation    |
+| 3    | method call (`to_s`)              | Each element in the sub-array (array or integer)             | None        | A string representation of the element     | Yes, by `size`                                          |
+| 3    | method call (`size`)              | Each element in the sub-array (array or integer), transformed by `to_s` | None        | An integer                                 | Yes, to perform comparison                              |
+| 3    | comparison (`==`)                 | Each element in the sub-array, transformed by `to_s` and `size` | None        | Boolean                                    | Yes, for the conditional statement `if/else`            |
+| 3-9  | conditional statement (`if/else`) | Each element in the sub-array (array or integer)             | None        | An integer or a new array                  | Yes, to define the middle block's return value          |
+| 4    | `el + 1`                          | Each integer element in the sub-array                        | None        | An integer: `6` and `7`                    | Yes, to define the conditional statement's return value |
+| 6    | method call (`map`)               | Each array element in the sub-array                          | None        | A new array: `[2, 3]` and `[4, 5]`         | Yes, to define the conditional statement's return value |
+| 6-8  | inner block execution             | Each array element in the sub-array                          | None        | An integer: `2`, `3`, `4`, and `5`         | Yes, by inner level `map` to perform transformation     |
+| 7    | `n + 1`                           | Each (integer) element in the array inside the sub-array     | None        | An integer: `2`, `3`, `4`, and `5`         | Yes, to define the inner block's return value           |
+
