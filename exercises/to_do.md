@@ -14,3 +14,4 @@
 - [ ] Ex 6.3 (After Midnigth Part 2) with **Further Exploration** - First done: 30/05/2019
 - [ ] Ex 7.1 (Cute angles) with **Further Exploration** - First done: 04/06/2019
 - [ ] Ex 8.5 (Staggered Caps Part 1) with **Further Exploration** - Fist done: 10/06/2019
+- [ ] Practice Problem 5.5.16 (UUID) - First done: 15/06/2019
