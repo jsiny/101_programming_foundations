@@ -74,3 +74,45 @@ diamond_2(5)
 # *****
 #  ***
 #   *
+
+puts '---------'
+
+# Further Exploration
+
+def outlined_diamond(grid_size)
+  max_distance = (grid_size - 1) / 2
+  max_distance.downto(0)  { |distance| print_outlined_row(grid_size, distance) }
+  1.upto(max_distance)    { |distance| print_outlined_row(grid_size, distance) }
+end
+
+def print_outlined_row(grid_size, distance_from_center)
+  number_of_stars = grid_size - 2 * distance_from_center
+  stars = if number_of_stars == 1
+            '*'
+          else
+            '*' + ' ' * (number_of_stars - 2) + '*'
+          end
+  puts stars.center(grid_size)
+end
+
+outlined_diamond(5)
+
+#   *
+#  * *
+# *   *
+#  * *
+#   *
+
+puts '---------'
+
+outlined_diamond(9)
+
+#     *
+#    * *
+#   *   *
+#  *     *
+# *       *
+#  *     *
+#   *   *
+#    * *
+#     *
