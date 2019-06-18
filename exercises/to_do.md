@@ -15,4 +15,5 @@
 - [ ] Ex 7.1 (Cute angles) with **Further Exploration** - First done: 04/06/2019
 - [ ] Ex 8.5 (Staggered Caps Part 1) with **Further Exploration** - Fist done: 10/06/2019
 - [ ] Practice Problem 5.5.16 (UUID) - First done: 15/06/2019
-- [ ] Ex: 11.3 (Rotation Part 3) with **Further Exploration** - First done: 17/06/2019
+- [ ] Ex 11.3 (Rotation Part 3) with **Further Exploration** - First done: 17/06/2019
+- [ ] Ex 11.4 (1000 Lights) with **Further Exploration** - First done: 18/06/2019
