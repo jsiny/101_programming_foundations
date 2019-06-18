@@ -50,3 +50,27 @@ diamond(9)
 #   *****
 #    ***
 #     *
+
+puts '---------'
+
+# More elegant method
+
+def diamond_2(grid_size)
+  max_distance = (grid_size - 1) / 2
+  max_distance.downto(0)  { |distance| print_row(grid_size, distance) }
+  1.upto(max_distance)    { |distance| print_row(grid_size, distance) }
+end
+
+def print_row(grid_size, distance_from_center)
+  number_of_stars = grid_size - 2 * distance_from_center
+  stars = '*' * number_of_stars
+  puts stars.center(grid_size)
+end
+
+diamond_2(5)
+
+#   *
+#  ***
+# *****
+#  ***
+#   *
