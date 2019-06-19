@@ -64,7 +64,8 @@ def computer_places_piece!(board)
   square = nil
 
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(board, line)
+    square = find_interesting_square(board, line, PLAYER_MARKER)
+    square = find_interesting_square(board, line, COMPUTER_MARKER)
     break if square
   end
 
@@ -75,11 +76,9 @@ def computer_places_piece!(board)
   board[square] = COMPUTER_MARKER
 end
 
-def find_at_risk_square(board, line)
-  if board.values_at(*line).count(PLAYER_MARKER) == 2
+def find_interesting_square(board, line, player)
+  if board.values_at(*line).count(player) == 2
     board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-  else
-    nil
   end
 end
 
