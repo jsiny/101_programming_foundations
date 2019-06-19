@@ -61,12 +61,26 @@ def player_places_piece!(board)
 end
 
 def computer_places_piece!(board)
-  square = if detect_threat?(board)
-             defensive_move(board)
-           else
-             empty_squares(board).sample
-           end
+  square = nil
+
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(board, line)
+    break if square
+  end
+
+  if !square
+    square = empty_squares(board).sample
+  end
+
   board[square] = COMPUTER_MARKER
+end
+
+def find_at_risk_square(board, line)
+  if board.values_at(*line).count(PLAYER_MARKER) == 2
+    board.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+  else
+    nil
+  end
 end
 
 def board_full?(board)
@@ -83,26 +97,6 @@ def detect_winner(board)
     return 'Computer' if board.values_at(*line).count(COMPUTER_MARKER) == 3
   end
   nil
-end
-
-def detect_threat?(board)
-  WINNING_LINES.each do |line|
-    return true if board.values_at(*line).count(PLAYER_MARKER) == 2
-  end
-  false
-end
-
-def defensive_move(board)
-  computer_move = 0
-
-  WINNING_LINES.each do |line|
-    if board.values_at(*line).count(PLAYER_MARKER) == 2
-      line.each do |i|
-        break computer_move = i if board[i] == ' '
-      end
-    end
-  end
-  computer_move
 end
 
 loop do
