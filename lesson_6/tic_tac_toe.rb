@@ -1,4 +1,5 @@
 require 'pry'
+require 'pry-byebug'
 
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
@@ -6,6 +7,7 @@ COMPUTER_MARKER = 'O'
 WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
+NUMBER_OF_WINS = 2
 
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
@@ -83,28 +85,40 @@ def detect_winner(board)
 end
 
 loop do
-  board = initialize_board
+  player_score = 0
+  computer_score = 0
 
   loop do
-    display_board(board)
-    player_places_piece!(board)
-    display_board(board)
-    break if someone_won?(board) || board_full?(board)
+    board = initialize_board
 
-    computer_places_piece!(board)
-    display_board(board)
-    break if someone_won?(board) || board_full?(board)
-  end
+    loop do
+      display_board(board)
+      player_places_piece!(board)
+      display_board(board)
+      break if someone_won?(board) || board_full?(board)
 
-  if someone_won?(board)
-    prompt "#{detect_winner(board)} won!"
-  else
-    prompt "It's a tie!"
+      computer_places_piece!(board)
+      display_board(board)
+      break if someone_won?(board) || board_full?(board)
+    end
+
+    if someone_won?(board)
+      prompt "#{detect_winner(board).upcase} WON!"
+      detect_winner(board) == 'Player' ? player_score += 1 : computer_score += 1
+      prompt  "#{player_score} points for the Player, "\
+              "#{computer_score} for the Computer"
+    else
+      prompt "It's a tie!"
+    end
+
+    break if player_score == NUMBER_OF_WINS || computer_score == NUMBER_OF_WINS
   end
 
   prompt "Play again? (y or n)"
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
-
 prompt "Thanks for playing Tic Tac Toe! Goodbye"
+
+# I need to make a loop to prompt the user to start a new game in between
+# partial wins
