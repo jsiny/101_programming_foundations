@@ -61,7 +61,11 @@ def player_places_piece!(board)
 end
 
 def computer_places_piece!(board)
-  square = empty_squares(board).sample
+  square = if detect_threat?(board)
+             defensive_move(board)
+           else
+             empty_squares(board).sample
+           end
   board[square] = COMPUTER_MARKER
 end
 
@@ -79,6 +83,26 @@ def detect_winner(board)
     return 'Computer' if board.values_at(*line).count(COMPUTER_MARKER) == 3
   end
   nil
+end
+
+def detect_threat?(board)
+  WINNING_LINES.each do |line|
+    return true if board.values_at(*line).count(PLAYER_MARKER) == 2
+  end
+  false
+end
+
+def defensive_move(board)
+  computer_move = 0
+
+  WINNING_LINES.each do |line|
+    if board.values_at(*line).count(PLAYER_MARKER) == 2
+      line.each do |i|
+        break computer_move = i if board[i] == ' '
+      end
+    end
+  end
+  computer_move
 end
 
 loop do
@@ -111,7 +135,6 @@ loop do
     break if player_score == NUMBER_OF_WINS || computer_score == NUMBER_OF_WINS
     prompt "Press any key when you're ready for the next round"
     next if gets.chomp
-
   end
 
   prompt "Play again? (y or n)"
