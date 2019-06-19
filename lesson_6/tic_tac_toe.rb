@@ -41,10 +41,19 @@ def empty_squares(board)
   board.keys.select { |num| board[num] == INITIAL_MARKER }
 end
 
+def joinor(array, separator=', ', word='or')
+  case array.size
+  when 0 then ''
+  when 1 then array.first
+  when 2 then array.join(" #{word} ")
+  else array[0...-1].join(separator) + "#{separator + word} #{array[-1]}"
+  end
+end
+
 def player_places_piece!(board)
   square = ''
   loop do
-    prompt "Choose a square (#{empty_squares(board).join(', ')}):"
+    prompt "Choose a square (#{joinor(empty_squares(board))}):"
     square = gets.chomp.to_i
     break if empty_squares(board).include?(square)
     prompt "Sorry, that's not a valid choice."
