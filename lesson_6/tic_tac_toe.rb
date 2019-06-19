@@ -1,13 +1,10 @@
-require 'pry'
-require 'pry-byebug'
-
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
 WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
-NUMBER_OF_WINS = 2
+NUMBER_OF_WINS = 5
 
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
@@ -112,6 +109,9 @@ loop do
     end
 
     break if player_score == NUMBER_OF_WINS || computer_score == NUMBER_OF_WINS
+    prompt "Press any key when you're ready for the next round"
+    next if gets.chomp
+
   end
 
   prompt "Play again? (y or n)"
@@ -119,6 +119,3 @@ loop do
   break unless answer.downcase.start_with?('y')
 end
 prompt "Thanks for playing Tic Tac Toe! Goodbye"
-
-# I need to make a loop to prompt the user to start a new game in between
-# partial wins
