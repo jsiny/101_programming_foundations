@@ -3,7 +3,11 @@ require 'pry'
 INITIAL_MARKER = ' '
 PLAYER_MARKER = 'X'
 COMPUTER_MARKER = 'O'
+WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
+                  [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
+                  [[1, 5, 9], [3, 5, 7]]              # diagonals
 
+# rubocop:disable Metrics/AbcSize
 def display_board(brd)
   system 'clear'
   puts "You're #{PLAYER_MARKER}, Computer is #{COMPUTER_MARKER}."
@@ -21,6 +25,7 @@ def display_board(brd)
   puts "     |     |"
   puts ""
 end
+# rubocop:enable Metrics/AbcSize
 
 def prompt(msg)
   puts ">> #{msg}"
@@ -61,19 +66,9 @@ def someone_won?(board)
 end
 
 def detect_winner(board)
-  winning_lines = [[1, 2, 3], [4, 5, 5], [7, 8, 9]] + # rows
-                  [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
-                  [[1, 5, 9], [3, 5, 7]]              # diagonals
-  winning_lines.each do |line|
-    if    board[line[0]] == PLAYER_MARKER &&
-          board[line[1]] == PLAYER_MARKER &&
-          board[line[2]] == PLAYER_MARKER
-      return 'Player'
-    elsif board[line[0]] == PLAYER_MARKER &&
-          board[line[1]] == PLAYER_MARKER &&
-          board[line[2]] == PLAYER_MARKER
-      return 'Computer'
-    end
+  WINNING_LINES.each do |line|
+    return 'Player' if board.values_at(*line).count(PLAYER_MARKER) == 3
+    return 'Computer' if board.values_at(*line).count(COMPUTER_MARKER) == 3
   end
   nil
 end
