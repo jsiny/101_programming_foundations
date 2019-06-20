@@ -5,7 +5,7 @@ WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
 NUMBER_OF_WINS = 5
-FIRST_MOVE = 'computer'
+FIRST_MOVE = 'choose'
 VALID_FIRST_MOVES = %w(player computer choose).freeze
 VALID_ANSWERS = %w(y n).freeze
 
@@ -111,18 +111,16 @@ def detect_winner(board)
   nil
 end
 
-def first_player_place_piece!(board, current_player)
-  case current_player
-  when 'player' then player_places_piece!(board)
-  when 'computer' then computer_places_piece!(board)
+def place_piece!(board, current_player)
+  if current_player == 'player'
+    player_places_piece!(board)
+  else
+    computer_places_piece!(board)
   end
 end
 
-def second_player_place_piece!(board, current_player)
-  case current_player
-  when 'computer' then player_places_piece!(board)
-  when 'player' then computer_places_piece!(board)
-  end
+def alternate_player(current_player)
+  current_player == 'player' ? 'computer' : 'player'
 end
 
 def choose_first_player
@@ -154,14 +152,12 @@ loop do
 
     loop do
       display_board(board)
-      first_player_place_piece!(board, current_player)
-      display_board(board)
-      break if someone_won?(board) || board_full?(board)
-
-      second_player_place_piece!(board, current_player)
-      display_board(board)
+      place_piece!(board, current_player)
+      current_player = alternate_player(current_player)
       break if someone_won?(board) || board_full?(board)
     end
+
+    display_board(board)
 
     if someone_won?(board)
       prompt "#{detect_winner(board).upcase} WON!"
