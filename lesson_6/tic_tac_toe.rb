@@ -42,10 +42,6 @@ def initialize_board
   new_board
 end
 
-def empty_squares(board)
-  board.keys.select { |num| board[num] == INITIAL_MARKER }
-end
-
 def joinor(array, separator=', ', word='or')
   case array.size
   when 0 then ''
@@ -60,37 +56,80 @@ def valid_square?(num)
   num >= MIN_SQUARE && num <= MAX_SQUARE && num == num.to_i
 end
 
+def choose_first_player
+  choice = ''
+  loop do
+    prompt "Do you want to play first? ('y' or 'n')"
+    choice = gets.chomp.downcase
+    break if VALID_ANSWERS.include?(choice)
+    prompt "I didn't understand, please input a valid answer ('y' or 'n')"
+  end
+  choice == 'y' ? 'player' : 'computer'
+end
+
+def set_first_move
+  return choose_first_player if FIRST_MOVE == 'choose'
+  return FIRST_MOVE if VALID_FIRST_MOVES.include?(FIRST_MOVE)
+end
+
+def place_piece!(board, current_player)
+  if current_player == 'player'
+    player_places_piece!(board)
+  else
+    computer_places_piece!(board)
+  end
+end
+
+def alternate_player(current_player)
+  current_player == 'player' ? 'computer' : 'player'
+end
+
 def player_places_piece!(board)
   square = ''
+
   loop do
     prompt "Choose a square (#{joinor(empty_squares(board))}):"
     square = gets.chomp
     break if valid_square?(square)
     prompt "Sorry, that's not a valid choice."
   end
+
   board[square.to_i] = PLAYER_MARKER
 end
 
 def computer_places_piece!(board)
   square = nil
 
+  square = offensive_move(square, board)
+  square = defensive_move(square, board)  if square.nil?
+  square = choose_5(board)                if square.nil?
+  square = empty_squares(board).sample    if square.nil?
+
+  board[square] = COMPUTER_MARKER
+end
+
+def offensive_move(square, board)
   WINNING_LINES.each do |line|
     square = find_interesting_square(board, line, COMPUTER_MARKER)
     break if square
   end
+  square
+end
 
-  if !square
-    WINNING_LINES.each do |line|
-      square = find_interesting_square(board, line, PLAYER_MARKER)
-      break if square
-    end
+def defensive_move(square, board)
+  WINNING_LINES.each do |line|
+    square = find_interesting_square(board, line, PLAYER_MARKER)
+    break if square
   end
+  square
+end
 
-  if !square
-    square = empty_squares(board).include?(5) ? 5 : empty_squares(board).sample
-  end
+def choose_5(board)
+  5 if empty_squares(board).include?(5)
+end
 
-  board[square] = COMPUTER_MARKER
+def empty_squares(board)
+  board.keys.select { |num| board[num] == INITIAL_MARKER }
 end
 
 def find_interesting_square(board, line, marker)
@@ -115,35 +154,8 @@ def detect_winner(board)
   nil
 end
 
-def place_piece!(board, current_player)
-  if current_player == 'player'
-    player_places_piece!(board)
-  else
-    computer_places_piece!(board)
-  end
-end
-
-def alternate_player(current_player)
-  current_player == 'player' ? 'computer' : 'player'
-end
-
-def choose_first_player
-  choice = ''
-  loop do
-    prompt "Do you want to play first? ('y' or 'n')"
-    choice = gets.chomp.downcase
-    break if VALID_ANSWERS.include?(choice)
-    prompt "I didn't understand, please input a valid answer ('y' or 'n')"
-  end
-  choice == 'y' ? 'player' : 'computer'
-end
-
-def set_first_move
-  if FIRST_MOVE == 'choose'
-    choose_first_player
-  elsif VALID_FIRST_MOVES.include?(FIRST_MOVE)
-    FIRST_MOVE
-  end
+def display_score(player_score, computer_score)
+  prompt "SCORE: Player #{player_score} - Computer #{computer_score}"
 end
 
 def match_ended?(score1, score2)
@@ -183,8 +195,7 @@ loop do
     if someone_won?(board)
       prompt "#{detect_winner(board).upcase} WON!"
       detect_winner(board) == 'Player' ? player_score += 1 : computer_score += 1
-      prompt  "#{player_score} points for the Player, "\
-              "#{computer_score} for the Computer"
+      display_score(player_score, computer_score)
     else
       prompt "It's a tie!"
     end
@@ -199,7 +210,6 @@ loop do
   prompt "Do you want to play again? (y or n)"
   answer = gets.chomp.downcase
   break unless answer.start_with?('y')
-  clear
 end
 
-prompt "Thanks for playing Tic Tac Toe! Goodbye"
+prompt "Thanks for playing Tic Tac Toe!"
