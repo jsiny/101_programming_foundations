@@ -5,6 +5,9 @@ WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
 NUMBER_OF_WINS = 5
+FIRST_MOVE = 'computer'
+VALID_FIRST_MOVES = %w(player computer choose).freeze
+VALID_ANSWERS = %w(y n).freeze
 
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
@@ -49,15 +52,19 @@ def joinor(array, separator=', ', word='or')
   end
 end
 
+def valid_number?(num)
+  num == num.to_i.to_s
+end
+
 def player_places_piece!(board)
   square = ''
   loop do
     prompt "Choose a square (#{joinor(empty_squares(board))}):"
-    square = gets.chomp.to_i
-    break if empty_squares(board).include?(square)
+    square = gets.chomp
+    break if empty_squares(board).include?(square.to_i) && valid_number?(square)
     prompt "Sorry, that's not a valid choice."
   end
-  board[square] = PLAYER_MARKER
+  board[square.to_i] = PLAYER_MARKER
 end
 
 def computer_places_piece!(board)
@@ -104,20 +111,54 @@ def detect_winner(board)
   nil
 end
 
+def first_player_place_piece!(board, current_player)
+  case current_player
+  when 'player' then player_places_piece!(board)
+  when 'computer' then computer_places_piece!(board)
+  end
+end
+
+def second_player_place_piece!(board, current_player)
+  case current_player
+  when 'computer' then player_places_piece!(board)
+  when 'player' then computer_places_piece!(board)
+  end
+end
+
+def choose_first_player
+  choice = ''
+  loop do
+    prompt "Do you want to play first? ('y' or 'n')"
+    choice = gets.chomp.downcase
+    break if VALID_ANSWERS.include?(choice)
+    prompt "I didn't understand, please input a valid answer ('y' or 'n')"
+  end
+  choice == 'y' ? 'player' : 'computer'
+end
+
+def set_first_move
+  if FIRST_MOVE == 'choose'
+    choose_first_player
+  elsif VALID_FIRST_MOVES.include?(FIRST_MOVE)
+    FIRST_MOVE
+  end
+end
+
 loop do
   player_score = 0
   computer_score = 0
 
   loop do
     board = initialize_board
+    current_player = set_first_move
 
     loop do
       display_board(board)
-      player_places_piece!(board)
+      first_player_place_piece!(board, current_player)
       display_board(board)
       break if someone_won?(board) || board_full?(board)
 
-      computer_places_piece!(board)
+      second_player_place_piece!(board, current_player)
       display_board(board)
       break if someone_won?(board) || board_full?(board)
     end
@@ -140,4 +181,5 @@ loop do
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
+
 prompt "Thanks for playing Tic Tac Toe! Goodbye"
