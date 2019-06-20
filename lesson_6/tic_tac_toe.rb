@@ -68,8 +68,8 @@ def choose_first_player
 end
 
 def set_first_move
-  return choose_first_player if FIRST_MOVE == 'choose'
-  return FIRST_MOVE if VALID_FIRST_MOVES.include?(FIRST_MOVE)
+  return choose_first_player  if FIRST_MOVE == 'choose'
+  return FIRST_MOVE           if VALID_FIRST_MOVES.include?(FIRST_MOVE)
 end
 
 def place_piece!(board, current_player)
@@ -148,8 +148,8 @@ end
 
 def detect_winner(board)
   WINNING_LINES.each do |line|
-    return 'Player' if board.values_at(*line).count(PLAYER_MARKER) == 3
-    return 'Computer' if board.values_at(*line).count(COMPUTER_MARKER) == 3
+    return 'Player'   if board.values_at(*line).count(PLAYER_MARKER)    == 3
+    return 'Computer' if board.values_at(*line).count(COMPUTER_MARKER)  == 3
   end
   nil
 end
