@@ -14,7 +14,7 @@ VALID_ANSWERS = %w(y n).freeze
 
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
-  system 'clear'
+  system('clear') || system('cls')
   puts "You're #{PLAYER_MARKER}, Computer is #{COMPUTER_MARKER}."
   puts ""
   puts "     |     |"
