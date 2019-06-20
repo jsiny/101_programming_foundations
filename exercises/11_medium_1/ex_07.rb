@@ -7,19 +7,14 @@ DIGITS = {  'zero'  => '0',
             'six'   => '6',
             'seven' => '7',
             'eight' => '8',
-            'nine'  => '9'
-}
+            'nine'  => '9' }.freeze
 
 def word_to_digit(sentence)
-  new_sentence = sentence.split.map do |word|
-    if DIGITS.include?(word)
-      DIGITS[word]
-    else
-      word
-    end
+  DIGITS.keys.each do |digit|
+    sentence.gsub!(/\b#{digit}\b/, DIGITS[digit])
   end
-  new_sentence.join(' ')
+  sentence
 end
 
-p word_to_digit('Call me at five five five one two three four. Thanks.')# ==
-#'Call me at 5 5 5 1 2 3 4. Thanks.'
+sentence = 'Call me at five five five one two three four. Thanks.'
+p word_to_digit(sentence) == 'Call me at 5 5 5 1 2 3 4. Thanks.'
