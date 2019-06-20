@@ -5,6 +5,9 @@ WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
 NUMBER_OF_WINS = 5
+MIN_SQUARE = 1
+MAX_SQUARE = 9
+WAITING_TIME = 2
 FIRST_MOVE = 'choose'
 VALID_FIRST_MOVES = %w(player computer choose).freeze
 VALID_ANSWERS = %w(y n).freeze
@@ -52,8 +55,9 @@ def joinor(array, separator=', ', word='or')
   end
 end
 
-def valid_number?(num)
-  num == num.to_i.to_s
+def valid_square?(num)
+  num = num.to_f
+  num >= MIN_SQUARE && num <= MAX_SQUARE && num == num.to_i
 end
 
 def player_places_piece!(board)
@@ -61,7 +65,7 @@ def player_places_piece!(board)
   loop do
     prompt "Choose a square (#{joinor(empty_squares(board))}):"
     square = gets.chomp
-    break if empty_squares(board).include?(square.to_i) && valid_number?(square)
+    break if valid_square?(square)
     prompt "Sorry, that's not a valid choice."
   end
   board[square.to_i] = PLAYER_MARKER
@@ -142,7 +146,24 @@ def set_first_move
   end
 end
 
+def match_ended?(score1, score2)
+  score1 == NUMBER_OF_WINS || score2 == NUMBER_OF_WINS
+end
+
+def announce_winner(player_score)
+  if player_score == NUMBER_OF_WINS
+    prompt 'CONGRATS: YOU ARE THE GRAND WINNER!'
+  else
+    prompt 'THE COMPUTER IS THE GRAND WINNER!'
+    prompt 'First Tic Tac Toe, then the WORLD!'
+  end
+end
+
 loop do
+  prompt "Welcome to Tic Tac Toe!"
+  prompt "You need to win #{NUMBER_OF_WINS} rounds to become the grand winner!"
+  sleep WAITING_TIME
+
   player_score = 0
   computer_score = 0
 
@@ -168,14 +189,17 @@ loop do
       prompt "It's a tie!"
     end
 
-    break if player_score == NUMBER_OF_WINS || computer_score == NUMBER_OF_WINS
-    prompt "Press any key when you're ready for the next round"
-    next if gets.chomp
+    break if match_ended?(player_score, computer_score)
+    prompt "New round starts in #{WAITING_TIME} seconds!"
+    sleep WAITING_TIME
   end
 
-  prompt "Play again? (y or n)"
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  announce_winner(player_score)
+  sleep WAITING_TIME
+  prompt "Do you want to play again? (y or n)"
+  answer = gets.chomp.downcase
+  break unless answer.start_with?('y')
+  clear
 end
 
 prompt "Thanks for playing Tic Tac Toe! Goodbye"
