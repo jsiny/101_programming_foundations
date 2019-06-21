@@ -66,6 +66,11 @@ def deal_cards(deck, hand, number_of_cards=1)
   number_of_cards.times do
     hand[deck.pop] = 0 # compute card value
   end
+  hand
+end
+
+def initialize_hand(deck, hand)
+  deal_cards(deck, hand, 2)
 end
 
 deck = initialize_deck
@@ -73,10 +78,8 @@ p deck
 
 player_hand = {}
 dealer_hand = {}
-deal_cards(deck, player_hand, 2)
-deal_cards(deck, dealer_hand, 2)
+player_hand = initialize_hand(deck, player_hand)
+dealer_hand = initialize_hand(deck, dealer_hand)
 
 p player_hand
 p dealer_hand
-p deck
-p deck.size
