@@ -51,6 +51,11 @@
 
 SUITS = %w(Spades Hearts Diamonds Clubs).freeze
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
+WAITING_TIME = 0.5
+
+def prompt(message)
+  puts ">> #{message}"
+end
 
 def initialize_deck
   deck = []
@@ -69,17 +74,34 @@ def deal_cards(deck, hand, number_of_cards=1)
   hand
 end
 
-def initialize_hand(deck, hand)
-  deal_cards(deck, hand, 2)
+def initialize_hand(deck, hand) deal_cards(deck, hand, 2); end
+
+def display_initial_hands(player_hand, dealer_hand)
+  prompt "You have:"
+
+  player_hand.each do |card, value|
+    prompt "- The #{card[0]} of #{card[1]}: #{value} points"
+  end
+
+  visible_card = dealer_hand.first.first
+  prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}"\
+  ": #{dealer_hand[visible_card]} points"
 end
+
+prompt 'Welcome to our Twenty-One Game!'
+prompt "Your goal? to get as close as possible to 21... but don't go over!"
+sleep WAITING_TIME
 
 deck = initialize_deck
 p deck
 
 player_hand = {}
 dealer_hand = {}
+
 player_hand = initialize_hand(deck, player_hand)
 dealer_hand = initialize_hand(deck, dealer_hand)
 
 p player_hand
 p dealer_hand
+
+display_initial_hands(player_hand, dealer_hand)
