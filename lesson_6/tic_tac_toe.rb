@@ -5,8 +5,6 @@ WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # colons
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
 NUMBER_OF_WINS = 5
-MIN_SQUARE = 1
-MAX_SQUARE = 9
 WAITING_TIME = 2
 FIRST_MOVE = 'choose'
 VALID_FIRST_MOVES = %w(player computer choose).freeze
@@ -51,9 +49,9 @@ def joinor(array, separator=', ', word='or')
   end
 end
 
-def valid_square?(num)
+def valid_square?(num, board)
   num = num.to_f
-  num >= MIN_SQUARE && num <= MAX_SQUARE && num == num.to_i
+  num == num.to_i && empty_squares(board).include?(num)
 end
 
 def choose_first_player
@@ -90,7 +88,7 @@ def player_places_piece!(board)
   loop do
     prompt "Choose a square (#{joinor(empty_squares(board))}):"
     square = gets.chomp
-    break if valid_square?(square)
+    break if valid_square?(square, board)
     prompt "Sorry, that's not a valid choice."
   end
 
@@ -201,7 +199,7 @@ loop do
     end
 
     break if match_ended?(player_score, computer_score)
-    prompt "New round starts in #{WAITING_TIME} seconds!"
+    prompt "Next round starts in #{WAITING_TIME} seconds!"
     sleep WAITING_TIME
   end
 
