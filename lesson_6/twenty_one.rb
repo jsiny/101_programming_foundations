@@ -93,44 +93,59 @@ def busted?(hand)
   true if compute_total(hand) > 21
 end
 
-prompt 'Welcome to our Twenty-One Game!'
-prompt "Your goal? to get as close as possible to 21... but don't go over!"
-prompt "Shuffling cards..."
-sleep WAITING_TIME
-
-deck = initialize_deck
-
-player_hand = []
-dealer_hand = []
-
-player_hand = initialize_hand(deck, player_hand)
-dealer_hand = initialize_hand(deck, dealer_hand)
-
-display_initial_hands(player_hand, dealer_hand)
-
-# Player's turn
-answer = nil
-
 loop do
-  prompt 'Do you hit or stay?'
-  answer = gets.chomp
-  break if answer == 'stay'
-  deal_cards(deck, player_hand)
-  prompt "You drew: the #{player_hand.last[0]} of #{player_hand.last[1]}"
-  prompt "Your total score is now: #{compute_total(player_hand)}"
-  prompt DIVIDER
-  break if busted?(player_hand)
+  prompt 'Welcome to our Twenty-One Game!'
+  prompt "Your goal? to get as close as possible to 21... but don't go over!"
+
+  loop do
+    prompt "Shuffling cards..."
+    sleep WAITING_TIME
+
+    deck = initialize_deck
+
+    player_hand = []
+    dealer_hand = []
+
+    player_hand = initialize_hand(deck, player_hand)
+    dealer_hand = initialize_hand(deck, dealer_hand)
+
+    display_initial_hands(player_hand, dealer_hand)
+
+    # Player's turn
+    answer = nil
+
+    loop do
+      prompt 'Do you hit or stay?'
+      answer = gets.chomp
+      break if answer == 'stay'
+      deal_cards(deck, player_hand)
+      prompt "You drew: the #{player_hand.last[0]} of #{player_hand.last[1]}"
+      prompt "Your total score is now: #{compute_total(player_hand)}"
+      prompt DIVIDER
+      break if busted?(player_hand)
+    end
+
+    break if busted?(player_hand)
+
+    # Computer's turn
+    loop do
+      break if compute_total(dealer_hand) >= 17
+      deal_cards(deck, dealer_hand)
+      prompt "The dealer drew: the #{dealer_hand.last[0]} of "\
+      "#{dealer_hand.last[1]}"
+    end
+
+    p dealer_hand
+
+    break if busted?(dealer_hand)
+
+    # Compare hands
+  end
+
+  # DECLARE WINNER
+
+  # PLAY AGAIN??
+  break
 end
 
-# The player is busted?
-
-# Computer's turn
-loop do
-  break if compute_total(dealer_hand) >= 17
-  deal_cards(deck, dealer_hand)
-  prompt "The dealer drew: the #{dealer_hand.last[0]} of #{dealer_hand.last[1]}"
-end
-
-p dealer_hand
-
-# The computer is busted?
+prompt 'Thank you for playing Twenty-One!'
