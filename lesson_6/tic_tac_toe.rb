@@ -50,8 +50,7 @@ def joinor(array, separator=', ', word='or')
 end
 
 def valid_square?(num, board)
-  num = num.to_f
-  num == num.to_i && empty_squares(board).include?(num)
+  empty_squares(board).include?(num)
 end
 
 def choose_first_player
@@ -87,7 +86,7 @@ def player_places_piece!(board)
 
   loop do
     prompt "Choose a square (#{joinor(empty_squares(board))}):"
-    square = gets.chomp
+    square = gets.chomp.to_i
     break if valid_square?(square, board)
     prompt "Sorry, that's not a valid choice."
   end
