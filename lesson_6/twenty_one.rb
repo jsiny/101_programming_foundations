@@ -1,22 +1,3 @@
-# 52 card desks: 4 suits (hearts, diamonds, clubs and spades) and 13 values
-# (2..10, jack, queen, king, ace)
-
-# goal: get as close as possible to 21, without going over (busted)
-
-# intial setup:
-# - dealer vs player
-# - 2 cards per player
-# - The player can see both cards, and 1 out of the dealer's.
-
-# Card values:
-# - numbers 2 to 10: face value
-# - jack, queen and king: 10
-# - ace: can be either 1 or 11
-#     -  The ace's value is determined each time a new card is drawn from the
-#       deck
-#     - If the player has several aces, their values can be different (1 or 11)
-#       => the first ace can be 1 or 11. Future aces are all 1s.
-
 # Player turn:
 # - hit: ask for another card. The player can continue to hit as many times
 # as they want until it either stays or busts.
@@ -40,14 +21,6 @@
 #   - repeat until total >= 17
 # 6. If dealer bust, player wins.
 # 7. Compare cards and declare winner.
-
-# Data structure
-# Deck:
-# [['Ace', 'Spades'], ['Jack', 'Hearts'], ['3', 'Club'], ['10', 'Diamonds']]
-# shuffled and then poped
-
-# Main des joueurs:
-# { ['Ace', 'Spades'] => 11, ['Jack', 'Hearts'] => 10 }
 
 SUITS = %w(Spades Hearts Diamonds Clubs).freeze
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
@@ -92,6 +65,7 @@ def display_initial_hands(player_hand, dealer_hand)
 
   visible_card = dealer_hand.first
   prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}"
+  prompt DIVIDER
 end
 
 def compute_value(card)
@@ -115,6 +89,10 @@ def compute_total(hand)
   total
 end
 
+def busted?(hand)
+  true if compute_total(hand) > 21
+end
+
 prompt 'Welcome to our Twenty-One Game!'
 prompt "Your goal? to get as close as possible to 21... but don't go over!"
 prompt "Shuffling cards..."
@@ -125,12 +103,34 @@ deck = initialize_deck
 player_hand = []
 dealer_hand = []
 
-# player_points = 0
-# dealer_points = 0
-
 player_hand = initialize_hand(deck, player_hand)
 dealer_hand = initialize_hand(deck, dealer_hand)
 
 display_initial_hands(player_hand, dealer_hand)
-p player_hand
-p compute_total(player_hand)
+
+# Player's turn
+answer = nil
+
+loop do
+  prompt 'Do you hit or stay?'
+  answer = gets.chomp
+  break if answer == 'stay'
+  deal_cards(deck, player_hand)
+  prompt "You drew: the #{player_hand.last[0]} of #{player_hand.last[1]}"
+  prompt "Your total score is now: #{compute_total(player_hand)}"
+  prompt DIVIDER
+  break if busted?(player_hand)
+end
+
+# The player is busted?
+
+# Computer's turn
+loop do
+  break if compute_total(dealer_hand) >= 17
+  deal_cards(deck, dealer_hand)
+  prompt "The dealer drew: the #{dealer_hand.last[0]} of #{dealer_hand.last[1]}"
+end
+
+p dealer_hand
+
+# The computer is busted?
