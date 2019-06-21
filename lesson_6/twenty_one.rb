@@ -48,3 +48,19 @@
 
 # Main des joueurs:
 # { ['Ace', 'Spades'] => 11, ['Jack', 'Hearts'] => 10 }
+
+SUITS = %w(Spades Hearts Diamonds Clubs).freeze
+VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
+
+def initialize_deck
+  deck = []
+  SUITS.each do |suit|
+    VALUES.each do |value|
+      deck << [value, suit]
+    end
+  end
+  deck.shuffle
+end
+
+deck = initialize_deck
+p deck
