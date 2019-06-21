@@ -53,6 +53,7 @@ SUITS = %w(Spades Hearts Diamonds Clubs).freeze
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
 ROYALTY = %w(Jack Queen King).freeze
 WAITING_TIME = 0.5
+DIVIDER = '--------------------------'
 
 def prompt(message)
   puts ">> #{message}"
@@ -78,15 +79,19 @@ end
 def initialize_hand(deck, hand) deal_cards(deck, hand, 2); end
 
 def display_initial_hands(player_hand, dealer_hand)
+  prompt DIVIDER
   prompt "You have:"
 
   player_hand.each do |card|
     prompt "- The #{card[0]} of #{card[1]}" # : #{value} points"
   end
 
+  prompt DIVIDER
+  prompt "Your total points: #{compute_total(player_hand)}"
+  prompt DIVIDER
+
   visible_card = dealer_hand.first
-  prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}" # \
-  # ": #{dealer_hand[visible_card]} points"
+  prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}"
 end
 
 def compute_value(card)
@@ -96,13 +101,19 @@ def compute_value(card)
 end
 
 def compute_total(hand)
-  # do something
-end
+  values = hand.map(&:first)
+  total = 0
 
-# def compute_ace_value(points)
-#   return 1 if points > 10
-#   11
-# end
+  values.map do |value|
+    total += compute_value(value)
+  end
+
+  values.select { |value| value == 'Ace' }.count.times do
+    total -= 10 if total > 21
+  end
+
+  total
+end
 
 prompt 'Welcome to our Twenty-One Game!'
 prompt "Your goal? to get as close as possible to 21... but don't go over!"
@@ -110,7 +121,6 @@ prompt "Shuffling cards..."
 sleep WAITING_TIME
 
 deck = initialize_deck
-p deck
 
 player_hand = []
 dealer_hand = []
@@ -119,8 +129,8 @@ dealer_hand = []
 # dealer_points = 0
 
 player_hand = initialize_hand(deck, player_hand)
-p player_hand
 dealer_hand = initialize_hand(deck, dealer_hand)
 
 display_initial_hands(player_hand, dealer_hand)
-compute_total(player_hand)
+p player_hand
+p compute_total(player_hand)
