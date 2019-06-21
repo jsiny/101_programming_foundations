@@ -51,6 +51,7 @@
 
 SUITS = %w(Spades Hearts Diamonds Clubs).freeze
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
+ROYALTY = %w(Jack Queen King).freeze
 WAITING_TIME = 0.5
 
 def prompt(message)
@@ -69,7 +70,8 @@ end
 
 def deal_cards(deck, hand, number_of_cards=1)
   number_of_cards.times do
-    hand[deck.pop] = 0 # compute card value
+    card = deck.pop
+    hand[card] = compute_value(card[0])
   end
   hand
 end
@@ -88,8 +90,15 @@ def display_initial_hands(player_hand, dealer_hand)
   ": #{dealer_hand[visible_card]} points"
 end
 
+def compute_value(card)
+  return 10 if ROYALTY.include?(card)
+  return 11 if card == 'Ace' # not exactly true
+  card.to_i
+end
+
 prompt 'Welcome to our Twenty-One Game!'
 prompt "Your goal? to get as close as possible to 21... but don't go over!"
+prompt "Shuffling cards..."
 sleep WAITING_TIME
 
 deck = initialize_deck
@@ -100,8 +109,5 @@ dealer_hand = {}
 
 player_hand = initialize_hand(deck, player_hand)
 dealer_hand = initialize_hand(deck, dealer_hand)
-
-p player_hand
-p dealer_hand
 
 display_initial_hands(player_hand, dealer_hand)
