@@ -93,6 +93,16 @@ def busted?(hand)
   true if compute_total(hand) > 21
 end
 
+def compare_hands(player, dealer)
+  if compute_total(player) == compute_total(dealer)
+    'None'
+  elsif compute_total(dealer) <= 21
+    compute_total(player) > compute_total(dealer) ? 'Player' : 'Dealer'
+  else
+    'Player'
+  end
+end
+
 loop do
   prompt 'Welcome to our Twenty-One Game!'
   prompt "Your goal? to get as close as possible to 21... but don't go over!"
@@ -125,7 +135,10 @@ loop do
       break if busted?(player_hand)
     end
 
-    break if busted?(player_hand)
+    if busted?(player_hand)
+      prompt "DEALER HAS WON!"
+      break
+    end
 
     # Computer's turn
     loop do
@@ -137,15 +150,17 @@ loop do
 
     p dealer_hand
 
-    break if busted?(dealer_hand)
-
     # Compare hands
+    winner = compare_hands(player_hand, dealer_hand)
+    prompt "#{winner.upcase} HAS WON!"
+    break
   end
 
-  # DECLARE WINNER
-
   # PLAY AGAIN??
-  break
+  sleep WAITING_TIME
+  prompt "Do you want to play again? (y/n)"
+  answer = gets.chomp
+  break unless answer.downcase.start_with?('y')
 end
 
 prompt 'Thank you for playing Twenty-One!'
