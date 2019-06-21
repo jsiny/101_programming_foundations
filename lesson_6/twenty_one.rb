@@ -70,8 +70,7 @@ end
 
 def deal_cards(deck, hand, number_of_cards=1)
   number_of_cards.times do
-    card = deck.pop
-    hand[card] = compute_value(card[0])
+    hand << deck.pop
   end
   hand
 end
@@ -81,13 +80,13 @@ def initialize_hand(deck, hand) deal_cards(deck, hand, 2); end
 def display_initial_hands(player_hand, dealer_hand)
   prompt "You have:"
 
-  player_hand.each do |card, value|
-    prompt "- The #{card[0]} of #{card[1]}: #{value} points"
+  player_hand.each do |card|
+    prompt "- The #{card[0]} of #{card[1]}" # : #{value} points"
   end
 
-  visible_card = dealer_hand.first.first
-  prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}"\
-  ": #{dealer_hand[visible_card]} points"
+  visible_card = dealer_hand.first
+  prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}" # \
+  # ": #{dealer_hand[visible_card]} points"
 end
 
 def compute_value(card)
@@ -95,6 +94,15 @@ def compute_value(card)
   return 11 if card == 'Ace' # not exactly true
   card.to_i
 end
+
+def compute_total(hand)
+  # do something
+end
+
+# def compute_ace_value(points)
+#   return 1 if points > 10
+#   11
+# end
 
 prompt 'Welcome to our Twenty-One Game!'
 prompt "Your goal? to get as close as possible to 21... but don't go over!"
@@ -104,10 +112,15 @@ sleep WAITING_TIME
 deck = initialize_deck
 p deck
 
-player_hand = {}
-dealer_hand = {}
+player_hand = []
+dealer_hand = []
+
+# player_points = 0
+# dealer_points = 0
 
 player_hand = initialize_hand(deck, player_hand)
+p player_hand
 dealer_hand = initialize_hand(deck, dealer_hand)
 
 display_initial_hands(player_hand, dealer_hand)
+compute_total(player_hand)
