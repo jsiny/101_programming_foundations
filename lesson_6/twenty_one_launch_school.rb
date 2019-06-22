@@ -75,6 +75,10 @@ def play_again?
   answer.downcase.start_with?('y')
 end
 
+def goodbye
+  prompt 'Thank you for playing Twenty-One! Good bye!'
+end
+
 loop do
   prompt "Welcome to Twenty-One!"
 
@@ -156,4 +160,4 @@ loop do
   break unless play_again?
 end
 
-prompt "Thank you for playing Twenty-One! Good bye!"
+goodbye
