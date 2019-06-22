@@ -14,7 +14,7 @@ def prompt(message)
 end
 
 def welcome_message
-  prompt "Welcome to our #{MAX_POINTS} Game!"
+  prompt "Welcome to our Game of #{MAX_POINTS}!"
   sleep WAITING_TIME
   prompt  "Your goal? to get as close as possible to #{MAX_POINTS}..."\
           "but don't go over!"
@@ -122,6 +122,18 @@ def announce_winner(winner)
   prompt "#{winner.upcase} HAS WON!"
 end
 
+def add_to_score(winner, score)
+  case winner
+  when 'Player' then score['player'] += 1
+  when 'Dealer' then score['dealer'] += 1
+  end
+end
+
+def display_score(score)
+  prompt DIVIDER
+  prompt "SCORE: Player: #{score['player']} - Dealer: #{score['dealer']}"
+end
+
 def play_again?
   prompt "Do you want to play again? (y/n)"
   answer = gets.chomp.downcase
@@ -131,6 +143,7 @@ end
 
 clear_screen
 welcome_message
+score = { 'player' => 0, 'dealer' => 0 }
 
 loop do
   loop do
@@ -164,6 +177,7 @@ loop do
     if busted?(player_total)
       prompt "You busted!"
       announce_winner('dealer')
+      add_to_score('Dealer', score)
       break
     end
 
@@ -183,12 +197,14 @@ loop do
 
     display_final_hands(player_hand, dealer_hand, player_total, dealer_total)
     winner = compare_hands(player_total, dealer_total)
+    add_to_score(winner, score)
     announce_winner(winner)
     break
   end
 
   sleep WAITING_TIME
+  display_score(score)
   break unless play_again?
 end
 
-prompt 'Thank you for playing Twenty-One!'
+prompt "Thank you for playing #{MAX_POINTS}!"
