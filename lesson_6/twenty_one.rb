@@ -20,6 +20,8 @@ def welcome_message
           "but don't go over!"
   prompt  'Each head is worth 10 points, an ace can be worth 1 or 11 '\
           'points, and other cards are face value.'
+  prompt  "The first player who reaches #{NUMBER_OF_WINS} winning rounds "\
+          'become the Champion!'
   sleep WAITING_TIME
   prompt "Ready? LET'S PLAY!"
   prompt DIVIDER
@@ -141,70 +143,86 @@ def play_again?
   VALID_YES_ANSWERS.include?(answer)
 end
 
+def winner?(score)
+  score.values.any? { |pt| pt >= NUMBER_OF_WINS }
+end
+
+def announce_champion(score)
+  winner = score.key(NUMBER_OF_WINS).upcase
+  prompt "THE GRAND WINNER IS THE #{winner}!"
+  prompt DIVIDER
+end
+
 clear_screen
 welcome_message
-score = { 'player' => 0, 'dealer' => 0 }
 
 loop do
+  score = { 'player' => 0, 'dealer' => 0 }
+
   loop do
-    prompt "Shuffling cards..."
-    sleep WAITING_TIME
-
-    deck = initialize_deck
-
-    player_hand = []
-    dealer_hand = []
-
-    player_hand = initialize_hand(deck, player_hand)
-    dealer_hand = initialize_hand(deck, dealer_hand)
-    player_total = compute_total(player_hand)
-    dealer_total = compute_total(dealer_hand)
-    display_initial_hands(player_hand, dealer_hand, player_total)
-
-    # Player's turn
     loop do
-      prompt 'Do you hit or stay?'
-      answer = gets.chomp
-      break if VALID_STAY_ANSWERS.include?(answer)
+      prompt "Shuffling cards..."
+      sleep WAITING_TIME
 
-      deal_cards(deck, player_hand)
-      display_last_card(player_hand, 'You')
+      deck = initialize_deck
+
+      player_hand = []
+      dealer_hand = []
+
+      player_hand = initialize_hand(deck, player_hand)
+      dealer_hand = initialize_hand(deck, dealer_hand)
       player_total = compute_total(player_hand)
-      display_points(player_total)
-      break if busted?(player_total)
-    end
+      dealer_total = compute_total(dealer_hand)
+      display_initial_hands(player_hand, dealer_hand, player_total)
 
-    if busted?(player_total)
-      prompt "You busted!"
-      announce_winner('dealer')
-      add_to_score('Dealer', score)
+      # Player's turn
+      loop do
+        prompt 'Do you hit or stay?'
+        answer = gets.chomp
+        break if VALID_STAY_ANSWERS.include?(answer)
+
+        deal_cards(deck, player_hand)
+        display_last_card(player_hand, 'You')
+        player_total = compute_total(player_hand)
+        display_points(player_total)
+        break if busted?(player_total)
+      end
+
+      if busted?(player_total)
+        prompt "You busted!"
+        announce_winner('dealer')
+        add_to_score('Dealer', score)
+        break
+      end
+
+      # Dealer's turn
+      loop do
+        dealer_total = compute_total(dealer_hand)
+        break if dealer_total >= MAX_DEAL_POINTS
+
+        prompt 'Dealer hits...'
+        deal_cards(deck, dealer_hand)
+        display_last_card(dealer_hand, 'The dealer')
+      end
+
+      prompt "Let's reveal the cards..."
+      sleep WAITING_TIME
+      clear_screen
+
+      display_final_hands(player_hand, dealer_hand, player_total, dealer_total)
+      winner = compare_hands(player_total, dealer_total)
+      add_to_score(winner, score)
+      announce_winner(winner)
       break
     end
 
-    # Dealer's turn
-    loop do
-      dealer_total = compute_total(dealer_hand)
-      break if dealer_total >= MAX_DEAL_POINTS
+    display_score(score)
+    announce_champion(score) if winner?(score)
+    break if winner?(score)
 
-      prompt 'Dealer hits...'
-      deal_cards(deck, dealer_hand)
-      display_last_card(dealer_hand, 'The dealer')
-    end
-
-    prompt "Let's reveal the cards..."
-    sleep WAITING_TIME
+    sleep WAITING_TIME * 2
     clear_screen
-
-    display_final_hands(player_hand, dealer_hand, player_total, dealer_total)
-    winner = compare_hands(player_total, dealer_total)
-    add_to_score(winner, score)
-    announce_winner(winner)
-    break
   end
-
-  sleep WAITING_TIME
-  display_score(score)
   break unless play_again?
 end
-
 prompt "Thank you for playing #{MAX_POINTS}!"
