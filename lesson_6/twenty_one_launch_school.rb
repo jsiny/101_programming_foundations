@@ -2,6 +2,7 @@ SUITS = ['H', 'D', 'S', 'C']
 VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
 MAX_VALUE = 21
 MAX_DEAL_VALUE = 17
+NUMBER_OF_WINS = 5
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -57,17 +58,36 @@ def display_result(dealer_total, player_total)
   result = detect_result(dealer_total, player_total)
 
   case result
-  when :player_busted
-    prompt "You busted! Dealer wins!"
-  when :dealer_busted
-    prompt "Dealer busted! You win!"
-  when :player
-    prompt "You win!"
-  when :dealer
-    prompt "Dealer wins!"
-  when :tie
-    prompt "It's a tie!"
+  when :player_busted then prompt "You busted! Dealer wins!"
+  when :dealer_busted then prompt "Dealer busted! You win!"
+  when :player        then prompt "You win!"
+  when :dealer        then prompt "Dealer wins!"
+  when :tie           then prompt "It's a tie!"
   end
+end
+
+def add_to_score(dealer_total, player_total, score)
+  result = detect_result(dealer_total, player_total)
+
+  case result
+  when :player_busted then score[:dealer] += 1
+  when :dealer_busted then score[:player] += 1
+  when :player        then score[:player] += 1
+  when :dealer        then score[:dealer] += 1
+  end
+end
+
+def display_score(score)
+  prompt "SCORE: Player: #{score[:player]} - Dealer: #{score[:dealer]}"
+end
+
+def winner?(score)
+  score.values.any? { |pt| pt >= NUMBER_OF_WINS }
+end
+
+def announce_winner(score)
+  winner = score.key(NUMBER_OF_WINS).upcase
+  prompt "THE GRAND WINNER IS THE #{winner}!"
 end
 
 def play_again?
@@ -81,8 +101,17 @@ def goodbye
   prompt 'Thank you for playing Twenty-One! Good bye!'
 end
 
+score = { :player => 4, :dealer => 4 }
+
 loop do
+  if winner?(score)
+    announce_winner(score)
+    break
+  end
+
   prompt "Welcome to Twenty-One!"
+  display_score(score)
+  p winner?(score)
 
   # initialize vars
   deck = initialize_deck
@@ -126,6 +155,7 @@ loop do
 
   if busted?(player_total)
     display_result(dealer_total, player_total)
+    add_to_score(dealer_total, player_total, score)
     play_again? ? next : break
   else
     prompt "You stayed at #{player_total}"
@@ -146,6 +176,7 @@ loop do
   if busted?(dealer_total)
     prompt "Dealer total is now: #{dealer_total}"
     display_result(dealer_total, player_total)
+    add_to_score(dealer_total, player_total, score)
     play_again? ? next : break
   else
     prompt "Dealer stays at #{dealer_total}"
@@ -158,6 +189,7 @@ loop do
   puts "=============="
 
   display_result(dealer_total, player_total)
+  add_to_score(dealer_total, player_total, score)
 
   break unless play_again?
 end
