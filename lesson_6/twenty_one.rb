@@ -117,6 +117,13 @@ def announce_winner(winner)
   prompt "#{winner.upcase} HAS WON!"
 end
 
+def play_again?
+  prompt "Do you want to play again? (y/n)"
+  answer = gets.chomp.downcase
+  clear_screen
+  VALID_YES_ANSWERS.include?(answer)
+end
+
 clear_screen
 welcome_message
 
@@ -169,10 +176,7 @@ loop do
   end
 
   sleep WAITING_TIME
-  prompt "Do you want to play again? (y/n)"
-  answer = gets.chomp.downcase
-  clear_screen
-  break unless VALID_YES_ANSWERS.include?(answer)
+  break unless play_again?
 end
 
 prompt 'Thank you for playing Twenty-One!'
