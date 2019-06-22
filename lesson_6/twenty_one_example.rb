@@ -103,6 +103,7 @@ loop do
       prompt "Would you like to (h)it or (s)tay?"
       player_turn = gets.chomp.downcase
       break if ['h', 's'].include?(player_turn)
+
       prompt "Sorry, must enter 'h' or 's'."
     end
 

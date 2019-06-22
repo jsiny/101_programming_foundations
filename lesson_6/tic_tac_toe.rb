@@ -59,6 +59,7 @@ def choose_first_player
     prompt "Do you want to play first? ('y' or 'n')"
     choice = gets.chomp.downcase
     break if VALID_ANSWERS.include?(choice)
+
     prompt "I didn't understand, please input a valid answer ('y' or 'n')"
   end
   choice == 'y' ? 'player' : 'computer'
@@ -88,6 +89,7 @@ def player_places_piece!(board)
     prompt "Choose a square (#{joinor(empty_squares(board))}):"
     square = gets.chomp.to_i
     break if valid_square?(square, board)
+
     prompt "Sorry, that's not a valid choice."
   end
 
@@ -198,6 +200,7 @@ loop do
     end
 
     break if match_ended?(player_score, computer_score)
+
     prompt "Next round starts in #{WAITING_TIME} seconds!"
     sleep WAITING_TIME
   end

@@ -77,6 +77,7 @@ end
 def compute_value(card)
   return 10 if HEADS.include?(card)
   return 11 if card == 'Ace'
+
   card.to_i
 end
 
@@ -161,6 +162,7 @@ loop do
     # Dealer's turn
     loop do
       break if compute_total(dealer_hand) >= 17
+
       prompt 'Dealer hits...'
       deal_cards(deck, dealer_hand)
       display_last_card(dealer_hand, 'The dealer')
