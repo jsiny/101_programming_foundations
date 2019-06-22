@@ -38,12 +38,12 @@ end
 
 def initialize_hand(deck, hand) deal_cards(deck, hand, 2); end
 
-def display_initial_hands(player_hand, dealer_hand)
+def display_initial_hands(player_hand, dealer_hand, player_total)
   prompt DIVIDER
   prompt 'You have:'
 
   display_hand(player_hand)
-  display_points(player_hand)
+  display_points(player_total)
 
   visible_card = dealer_hand.first
   prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}"
@@ -56,22 +56,22 @@ def display_hand(hand)
   end
 end
 
-def display_points(hand)
+def display_points(total)
   prompt DIVIDER
-  prompt "Total points: #{compute_total(hand)}"
+  prompt "Total points: #{total}"
   prompt DIVIDER
 end
 
-def display_final_hands(player_hand, dealer_hand)
+def display_final_hands(player_hand, dealer_hand, player_total, dealer_total)
   prompt DIVIDER
   prompt 'You have:'
 
   display_hand(player_hand)
-  display_points(player_hand)
+  display_points(player_total)
 
   prompt 'The dealer has:'
   display_hand(dealer_hand)
-  display_points(dealer_hand)
+  display_points(dealer_total)
 end
 
 def compute_value(card)
@@ -100,15 +100,15 @@ def display_last_card(hand, player)
   prompt "#{player} drew: the #{hand.last[0]} of #{hand.last[1]}"
 end
 
-def busted?(hand)
-  compute_total(hand) > 21
+def busted?(total)
+  total > 21
 end
 
-def compare_hands(player, dealer)
-  if compute_total(player) == compute_total(dealer)
+def compare_hands(player_total, dealer_total)
+  if player_total == dealer_total
     'None'
-  elsif compute_total(dealer) <= 21
-    compute_total(player) > compute_total(dealer) ? 'Player' : 'Dealer'
+  elsif dealer_total <= 21
+    player_total > dealer_total ? 'Player' : 'Dealer'
   else
     'Player'
   end
@@ -140,7 +140,9 @@ loop do
 
     player_hand = initialize_hand(deck, player_hand)
     dealer_hand = initialize_hand(deck, dealer_hand)
-    display_initial_hands(player_hand, dealer_hand)
+    player_total = compute_total(player_hand)
+    dealer_total = compute_total(dealer_hand)
+    display_initial_hands(player_hand, dealer_hand, player_total)
 
     # Player's turn
     loop do
@@ -150,18 +152,21 @@ loop do
 
       deal_cards(deck, player_hand)
       display_last_card(player_hand, 'You')
-      display_points(player_hand)
-      break if busted?(player_hand)
+      player_total = compute_total(player_hand)
+      display_points(player_total)
+      break if busted?(player_total)
     end
 
-    if busted?(player_hand)
+    if busted?(player_total)
+      prompt "You busted!"
       announce_winner('dealer')
       break
     end
 
     # Dealer's turn
     loop do
-      break if compute_total(dealer_hand) >= 17
+      dealer_total = compute_total(dealer_hand)
+      break if dealer_total >= 17
 
       prompt 'Dealer hits...'
       deal_cards(deck, dealer_hand)
@@ -172,8 +177,8 @@ loop do
     sleep WAITING_TIME
     clear_screen
 
-    display_final_hands(player_hand, dealer_hand)
-    winner = compare_hands(player_hand, dealer_hand)
+    display_final_hands(player_hand, dealer_hand, player_total, dealer_total)
+    winner = compare_hands(player_total, dealer_total)
     announce_winner(winner)
     break
   end
