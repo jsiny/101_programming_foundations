@@ -1,6 +1,6 @@
 SUITS = ['Spades ♠', 'Hearts ♥', 'Diamonds ♦', 'Clubs ♣']
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
-ROYALTY = %w(Jack Queen King)
+HEADS = %w(Jack Queen King)
 VALID_STAY_ANSWERS = %w(stay s st sta)
 VALID_YES_ANSWERS = %w(y yes yeah)
 WAITING_TIME = 1.5
@@ -26,13 +26,7 @@ def clear_screen
 end
 
 def initialize_deck
-  deck = []
-  SUITS.each do |suit|
-    VALUES.each do |value|
-      deck << [value, suit]
-    end
-  end
-  deck.shuffle
+  VALUES.product(SUITS).shuffle
 end
 
 def deal_cards(deck, hand, number_of_cards=1)
@@ -81,7 +75,7 @@ def display_final_hands(player_hand, dealer_hand)
 end
 
 def compute_value(card)
-  return 10 if ROYALTY.include?(card)
+  return 10 if HEADS.include?(card)
   return 11 if card == 'Ace'
   card.to_i
 end
@@ -106,7 +100,7 @@ def display_last_card(hand, player)
 end
 
 def busted?(hand)
-  true if compute_total(hand) > 21
+  compute_total(hand) > 21
 end
 
 def compare_hands(player, dealer)
