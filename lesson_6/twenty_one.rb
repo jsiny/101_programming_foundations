@@ -1,28 +1,4 @@
-# Player turn:
-# - hit: ask for another card. The player can continue to hit as many times
-# as they want until it either stays or busts.
-# - stay
-
-# Dealer turn:
-# - when the player stays, it's the dealer's turn
-# - hit until the total is at least 17
-# - if the dealer busts, the player wins
-
-# Comparing cards:
-# - When both the player and dealer stay, it's time to compare the total value
-# of the cards and see who has the highest value
-
-# 1. Initialize deck
-# 2. Deal cards to player and dealer
-# 3. Player turn: hit or stay
-#   - repeat until bust or "stay"
-# 4. If player bust, dealer wins.
-# 5. Dealer turn: hit or stay
-#   - repeat until total >= 17
-# 6. If dealer bust, player wins.
-# 7. Compare cards and declare winner.
-
-SUITS = %w(Spades Hearts Diamonds Clubs).freeze
+SUITS = ['Spades ♠', 'Hearts ♥', 'Diamonds ♦', 'Clubs ♣'].freeze
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
 ROYALTY = %w(Jack Queen King).freeze
 WAITING_TIME = 1.5
@@ -122,6 +98,10 @@ def compare_hands(player, dealer)
   end
 end
 
+def announce_winner(winner)
+  prompt "#{winner.upcase} HAS WON!"
+end
+
 prompt 'Welcome to our Twenty-One Game!'
 prompt "Your goal? to get as close as possible to 21... but don't go over!"
 sleep WAITING_TIME
@@ -144,8 +124,6 @@ loop do
     display_initial_hands(player_hand, dealer_hand)
 
     # Player's turn
-    answer = nil
-
     loop do
       prompt 'Do you hit or stay?'
       answer = gets.chomp
@@ -158,11 +136,11 @@ loop do
     end
 
     if busted?(player_hand)
-      prompt "DEALER HAS WON!"
+      announce_winner('dealer')
       break
     end
 
-    # Computer's turn
+    # Dealer's turn
     loop do
       break if compute_total(dealer_hand) >= 17
       deal_cards(deck, dealer_hand)
@@ -170,19 +148,16 @@ loop do
       "#{dealer_hand.last[1]}"
     end
 
-    # Reveal cards
     prompt "Let's reveal the cards..."
     sleep WAITING_TIME
     system('clear') || system('cls')
-    display_final_hands(player_hand, dealer_hand)
 
-    # Compare hands
+    display_final_hands(player_hand, dealer_hand)
     winner = compare_hands(player_hand, dealer_hand)
-    prompt "#{winner.upcase} HAS WON!"
+    announce_winner(winner)
     break
   end
 
-  # PLAY AGAIN??
   sleep WAITING_TIME
   prompt "Do you want to play again? (y/n)"
   answer = gets.chomp
