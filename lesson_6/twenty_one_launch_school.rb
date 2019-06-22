@@ -87,6 +87,7 @@ end
 
 def announce_winner(score)
   winner = score.key(NUMBER_OF_WINS).upcase
+  display_score(score)
   prompt "THE GRAND WINNER IS THE #{winner}!"
 end
 
@@ -101,17 +102,13 @@ def goodbye
   prompt 'Thank you for playing Twenty-One! Good bye!'
 end
 
-score = { :player => 4, :dealer => 4 }
+score = { :player => 0, :dealer => 0 }
 
 loop do
-  if winner?(score)
-    announce_winner(score)
-    break
-  end
+  break if winner?(score)
 
   prompt "Welcome to Twenty-One!"
   display_score(score)
-  p winner?(score)
 
   # initialize vars
   deck = initialize_deck
@@ -156,7 +153,13 @@ loop do
   if busted?(player_total)
     display_result(dealer_total, player_total)
     add_to_score(dealer_total, player_total, score)
-    play_again? ? next : break
+
+    if winner?(score)
+      announce_winner(score)
+      break
+    else
+      play_again? ? next : break
+    end
   else
     prompt "You stayed at #{player_total}"
   end
@@ -177,7 +180,13 @@ loop do
     prompt "Dealer total is now: #{dealer_total}"
     display_result(dealer_total, player_total)
     add_to_score(dealer_total, player_total, score)
-    play_again? ? next : break
+
+    if winner?(score)
+      announce_winner(score)
+      break
+    else
+      play_again? ? next : break
+    end
   else
     prompt "Dealer stays at #{dealer_total}"
   end
@@ -191,7 +200,11 @@ loop do
   display_result(dealer_total, player_total)
   add_to_score(dealer_total, player_total, score)
 
-  break unless play_again?
+  if winner?(score)
+    announce_winner(score)
+  else
+    break unless play_again?
+  end
 end
 
 goodbye
