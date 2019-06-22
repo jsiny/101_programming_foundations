@@ -102,7 +102,7 @@ def goodbye
   prompt 'Thank you for playing Twenty-One! Good bye!'
 end
 
-score = { :player => 0, :dealer => 0 }
+score = { player: 0, dealer: 0 }
 
 loop do
   break if winner?(score)
