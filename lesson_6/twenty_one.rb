@@ -3,6 +3,9 @@ VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
 HEADS = %w(Jack Queen King)
 VALID_STAY_ANSWERS = %w(stay s st sta)
 VALID_YES_ANSWERS = %w(y yes yeah)
+MAX_POINTS = 21
+MAX_DEAL_POINTS = 17
+NUMBER_OF_WINS = 5
 WAITING_TIME = 1.5
 DIVIDER = '--------------------------'
 
@@ -11,9 +14,10 @@ def prompt(message)
 end
 
 def welcome_message
-  prompt 'Welcome to our Twenty-One Game!'
+  prompt "Welcome to our #{MAX_POINTS} Game!"
   sleep WAITING_TIME
-  prompt "Your goal? to get as close as possible to 21... but don't go over!"
+  prompt  "Your goal? to get as close as possible to #{MAX_POINTS}..."\
+          "but don't go over!"
   prompt  'Each head is worth 10 points, an ace can be worth 1 or 11 '\
           'points, and other cards are face value.'
   sleep WAITING_TIME
@@ -90,7 +94,7 @@ def compute_total(hand)
   end
 
   values.select { |value| value == 'Ace' }.count.times do
-    total -= 10 if total > 21
+    total -= 10 if total > MAX_POINTS
   end
 
   total
@@ -101,13 +105,13 @@ def display_last_card(hand, player)
 end
 
 def busted?(total)
-  total > 21
+  total > MAX_POINTS
 end
 
 def compare_hands(player_total, dealer_total)
   if player_total == dealer_total
     'None'
-  elsif dealer_total <= 21
+  elsif dealer_total <= MAX_POINTS
     player_total > dealer_total ? 'Player' : 'Dealer'
   else
     'Player'
@@ -166,7 +170,7 @@ loop do
     # Dealer's turn
     loop do
       dealer_total = compute_total(dealer_hand)
-      break if dealer_total >= 17
+      break if dealer_total >= MAX_DEAL_POINTS
 
       prompt 'Dealer hits...'
       deal_cards(deck, dealer_hand)
