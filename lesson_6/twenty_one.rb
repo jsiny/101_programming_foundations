@@ -1,12 +1,24 @@
-SUITS = ['Spades ♠', 'Hearts ♥', 'Diamonds ♦', 'Clubs ♣'].freeze
-VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
-ROYALTY = %w(Jack Queen King).freeze
-VALID_STAY_ANSWERS = %w(stay s st)
+SUITS = ['Spades ♠', 'Hearts ♥', 'Diamonds ♦', 'Clubs ♣']
+VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
+ROYALTY = %w(Jack Queen King)
+VALID_STAY_ANSWERS = %w(stay s st sta)
+VALID_YES_ANSWERS = %w(y yes yeah)
 WAITING_TIME = 1.5
 DIVIDER = '--------------------------'
 
 def prompt(message)
   puts ">> #{message}"
+end
+
+def welcome_message
+  prompt 'Welcome to our Twenty-One Game!'
+  sleep WAITING_TIME
+  prompt "Your goal? to get as close as possible to 21... but don't go over!"
+  prompt  'Each head is worth 10 points, an ace can be worth 1 or 11 '\
+          'points, and other cards are face value.'
+  sleep WAITING_TIME
+  prompt "Ready? LET'S PLAY!"
+  prompt DIVIDER
 end
 
 def clear_screen
@@ -89,6 +101,10 @@ def compute_total(hand)
   total
 end
 
+def display_last_card(hand, player)
+  prompt "#{player} drew: the #{hand.last[0]} of #{hand.last[1]}"
+end
+
 def busted?(hand)
   true if compute_total(hand) > 21
 end
@@ -108,13 +124,9 @@ def announce_winner(winner)
 end
 
 clear_screen
-prompt 'Welcome to our Twenty-One Game!'
-prompt "Your goal? to get as close as possible to 21... but don't go over!"
-sleep WAITING_TIME
+welcome_message
 
 loop do
-  clear_screen
-
   loop do
     prompt "Shuffling cards..."
     sleep WAITING_TIME
@@ -133,10 +145,10 @@ loop do
       prompt 'Do you hit or stay?'
       answer = gets.chomp
       break if VALID_STAY_ANSWERS.include?(answer)
+
       deal_cards(deck, player_hand)
-      prompt "You drew: the #{player_hand.last[0]} of #{player_hand.last[1]}"
-      prompt "Your total score is now: #{compute_total(player_hand)}"
-      prompt DIVIDER
+      display_last_card(player_hand, 'You')
+      display_points(player_hand)
       break if busted?(player_hand)
     end
 
@@ -149,8 +161,7 @@ loop do
     loop do
       break if compute_total(dealer_hand) >= 17
       deal_cards(deck, dealer_hand)
-      prompt "The dealer drew: the #{dealer_hand.last[0]} of "\
-      "#{dealer_hand.last[1]}"
+      display_last_card(dealer_hand, 'The dealer')
     end
 
     prompt "Let's reveal the cards..."
@@ -165,8 +176,9 @@ loop do
 
   sleep WAITING_TIME
   prompt "Do you want to play again? (y/n)"
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  answer = gets.chomp.downcase
+  clear_screen
+  break unless VALID_YES_ANSWERS.include?(answer)
 end
 
 prompt 'Thank you for playing Twenty-One!'
