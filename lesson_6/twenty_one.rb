@@ -1,11 +1,16 @@
 SUITS = ['Spades ♠', 'Hearts ♥', 'Diamonds ♦', 'Clubs ♣'].freeze
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
 ROYALTY = %w(Jack Queen King).freeze
+VALID_STAY_ANSWERS = %w(stay s st)
 WAITING_TIME = 1.5
 DIVIDER = '--------------------------'
 
 def prompt(message)
   puts ">> #{message}"
+end
+
+def clear_screen
+  system('clear') || system('cls')
 end
 
 def initialize_deck
@@ -102,12 +107,13 @@ def announce_winner(winner)
   prompt "#{winner.upcase} HAS WON!"
 end
 
+clear_screen
 prompt 'Welcome to our Twenty-One Game!'
 prompt "Your goal? to get as close as possible to 21... but don't go over!"
 sleep WAITING_TIME
 
 loop do
-  system('clear') || system('cls')
+  clear_screen
 
   loop do
     prompt "Shuffling cards..."
@@ -120,14 +126,13 @@ loop do
 
     player_hand = initialize_hand(deck, player_hand)
     dealer_hand = initialize_hand(deck, dealer_hand)
-
     display_initial_hands(player_hand, dealer_hand)
 
     # Player's turn
     loop do
       prompt 'Do you hit or stay?'
       answer = gets.chomp
-      break if answer == 'stay'
+      break if VALID_STAY_ANSWERS.include?(answer)
       deal_cards(deck, player_hand)
       prompt "You drew: the #{player_hand.last[0]} of #{player_hand.last[1]}"
       prompt "Your total score is now: #{compute_total(player_hand)}"
@@ -150,7 +155,7 @@ loop do
 
     prompt "Let's reveal the cards..."
     sleep WAITING_TIME
-    system('clear') || system('cls')
+    clear_screen
 
     display_final_hands(player_hand, dealer_hand)
     winner = compare_hands(player_hand, dealer_hand)
