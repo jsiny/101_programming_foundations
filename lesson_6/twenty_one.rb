@@ -25,7 +25,7 @@
 SUITS = %w(Spades Hearts Diamonds Clubs).freeze
 VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace).freeze
 ROYALTY = %w(Jack Queen King).freeze
-WAITING_TIME = 0.5
+WAITING_TIME = 1.5
 DIVIDER = '--------------------------'
 
 def prompt(message)
@@ -53,24 +53,43 @@ def initialize_hand(deck, hand) deal_cards(deck, hand, 2); end
 
 def display_initial_hands(player_hand, dealer_hand)
   prompt DIVIDER
-  prompt "You have:"
+  prompt 'You have:'
 
-  player_hand.each do |card|
-    prompt "- The #{card[0]} of #{card[1]}" # : #{value} points"
-  end
-
-  prompt DIVIDER
-  prompt "Your total points: #{compute_total(player_hand)}"
-  prompt DIVIDER
+  display_hand(player_hand)
+  display_points(player_hand)
 
   visible_card = dealer_hand.first
   prompt "The dealer has the #{visible_card[0]} of #{visible_card[1]}"
   prompt DIVIDER
 end
 
+def display_hand(hand)
+  hand.each do |card|
+    prompt "- The #{card[0]} of #{card[1]}"
+  end
+end
+
+def display_points(hand)
+  prompt DIVIDER
+  prompt "Total points: #{compute_total(hand)}"
+  prompt DIVIDER
+end
+
+def display_final_hands(player_hand, dealer_hand)
+  prompt DIVIDER
+  prompt 'You have:'
+
+  display_hand(player_hand)
+  display_points(player_hand)
+
+  prompt 'The dealer has:'
+  display_hand(dealer_hand)
+  display_points(dealer_hand)
+end
+
 def compute_value(card)
   return 10 if ROYALTY.include?(card)
-  return 11 if card == 'Ace' # not exactly true
+  return 11 if card == 'Ace'
   card.to_i
 end
 
@@ -103,9 +122,12 @@ def compare_hands(player, dealer)
   end
 end
 
+prompt 'Welcome to our Twenty-One Game!'
+prompt "Your goal? to get as close as possible to 21... but don't go over!"
+sleep WAITING_TIME
+
 loop do
-  prompt 'Welcome to our Twenty-One Game!'
-  prompt "Your goal? to get as close as possible to 21... but don't go over!"
+  system('clear') || system('cls')
 
   loop do
     prompt "Shuffling cards..."
@@ -148,7 +170,11 @@ loop do
       "#{dealer_hand.last[1]}"
     end
 
-    p dealer_hand
+    # Reveal cards
+    prompt "Let's reveal the cards..."
+    sleep WAITING_TIME
+    system('clear') || system('cls')
+    display_final_hands(player_hand, dealer_hand)
 
     # Compare hands
     winner = compare_hands(player_hand, dealer_hand)
