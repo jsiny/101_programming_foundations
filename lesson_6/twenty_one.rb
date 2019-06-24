@@ -9,7 +9,7 @@ VALID_NO_ANSWERS    = %w(n no nope nah nay)
 
 MAX_POINTS      = 21
 MAX_DEAL_POINTS = 17
-NUMBER_OF_WINS  = 1
+NUMBER_OF_WINS  = 5
 WAITING_TIME    = 1.5
 DIVIDER = '--------------------------'
 
@@ -126,6 +126,15 @@ def player_hits(deck, hand, player_string)
   display_last_card(hand, player_string)
 end
 
+def dealer_turn(deck, dealer_hand)
+  loop do
+    dealer_total = compute_total(dealer_hand)
+    break if dealer_total >= MAX_DEAL_POINTS
+    prompt 'Dealer hits...'
+    player_hits(deck, dealer_hand, 'The dealer')
+  end
+end
+
 def determine_winner(player_total, dealer_total)
   if player_total == dealer_total
     'None'
@@ -217,13 +226,8 @@ loop do
         break
       end
 
-      # Dealer's turn
-      loop do
-        dealer_total = compute_total(dealer_hand)
-        break if dealer_total >= MAX_DEAL_POINTS
-        prompt 'Dealer hits...'
-        player_hits(deck, dealer_hand, 'The dealer')
-      end
+      dealer_turn(deck, dealer_hand)
+      dealer_total = compute_total(dealer_hand)
 
       prompt "Let's reveal the cards..."
       sleep WAITING_TIME
