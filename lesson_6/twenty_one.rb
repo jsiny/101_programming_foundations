@@ -248,9 +248,10 @@ loop do
     announce_champion(score) if winner?(score)
     break if winner?(score)
 
-    sleep WAITING_TIME * 2
+    sleep WAITING_TIME * 3
     clear_screen
   end
   break unless play_again?
 end
+
 prompt "Thank you for playing #{MAX_POINTS}!"
