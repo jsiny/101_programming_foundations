@@ -121,9 +121,26 @@ def busted?(total)
   total > MAX_POINTS
 end
 
-def player_hits(deck, hand, player_string)
+def player_hits!(deck, hand, player_string)
   deal_cards(deck, hand)
   display_last_card(hand, player_string)
+end
+
+def player_turn(deck, player_hand)
+  loop do
+    prompt 'Do you hit or stay? (h/s)'
+    answer = gets.chomp.downcase
+    break if VALID_STAY_ANSWERS.include?(answer)
+
+    if VALID_HIT_ANSWERS.include?(answer)
+      player_hits!(deck, player_hand, 'You')
+      player_total = compute_total(player_hand)
+      display_points(player_total)
+      break if busted?(player_total)
+    else
+      prompt 'Not a valid choice!'
+    end
+  end
 end
 
 def dealer_turn(deck, dealer_hand)
@@ -131,7 +148,7 @@ def dealer_turn(deck, dealer_hand)
     dealer_total = compute_total(dealer_hand)
     break if dealer_total >= MAX_DEAL_POINTS
     prompt 'Dealer hits...'
-    player_hits(deck, dealer_hand, 'The dealer')
+    player_hits!(deck, dealer_hand, 'The dealer')
   end
 end
 
@@ -201,23 +218,10 @@ loop do
       player_hand = initialize_hand(deck, player_hand)
       dealer_hand = initialize_hand(deck, dealer_hand)
       player_total = compute_total(player_hand)
-      dealer_total = compute_total(dealer_hand)
       display_initial_hands(player_hand, dealer_hand, player_total)
 
-      # Player's turn
-      loop do
-        prompt 'Do you hit or stay? (h/s)'
-        answer = gets.chomp.downcase
-        break if VALID_STAY_ANSWERS.include?(answer)
-        if VALID_HIT_ANSWERS.include?(answer)
-          player_hits(deck, player_hand, 'You')
-          player_total = compute_total(player_hand)
-          display_points(player_total)
-          break if busted?(player_total)
-        else
-          prompt 'Not a valid choice!'
-        end
-      end
+      player_turn(deck, player_hand)
+      player_total = compute_total(player_hand)
 
       if busted?(player_total)
         prompt "You busted!"
