@@ -16,10 +16,6 @@ AllCops:
   # run on? (If there is more than one, set this to the lowest version.)
   TargetRubyVersion: 2.3
 
-Naming/BinaryOperatorParameterName:
-  Description: When defining binary operators, name the argument other.
-  Enabled: false
-
 Style/BlockComments:
   Description: 'Do not use block comments.'
   Enabled: false
@@ -56,7 +52,7 @@ Style/DoubleNegation:
   Description: 'Checks for uses of double negation (!!).'
   Enabled: false
 
-Layout/EmptyLineBetweenDefs:
+Style/EmptyLineBetweenDefs:
   Enabled: true
   AllowAdjacentOneLineDefs: true
 
@@ -91,7 +87,7 @@ Style/InlineComment:
   Description: Avoid inline comments.
   Enabled: false
 
-Style/MethodCallWithoutArgsParentheses:
+Style/MethodCallParentheses:
   Description: Do not use parentheses for method calls with no arguments.
   Enabled: true
 
@@ -129,6 +125,10 @@ Style/NumericPredicate:
 
 Style/OneLineConditional:
   Description: Favor the ternary operator(?:) over if/then/else/end constructs.
+  Enabled: false
+
+Style/OpMethod:
+  Description: When defining binary operators, name the argument other.
   Enabled: false
 
 Style/ParenthesesAroundCondition:
@@ -188,7 +188,7 @@ Style/SingleLineMethods:
   Description: Avoid single-line methods.
   Enabled: false
 
-Layout/SpaceAroundEqualsInParameterDefault:
+Style/SpaceAroundEqualsInParameterDefault:
   Enabled: false
 
 Style/StringLiterals:
@@ -243,3 +243,16 @@ Lint/LiteralInInterpolation:
   Description: 'Avoid interpolating literals in strings'
   AutoCorrect: false
   Enabled: true
+
+##################### Performance ##################################
+
+Performance/Casecmp:
+  Description: 'Use `casecmp` rather than `downcase ==`.'
+  Reference: 'https://github.com/JuanitoFatas/fast-ruby#stringcasecmp-vs-stringdowncase---code'
+  Enabled: false
+
+Performance/RedundantMatch:
+  Description: >-
+                  Use `=~` instead of `String#match` or `Regexp#match` in a context where the
+                  returned `MatchData` is not needed.
+  Enabled: false
