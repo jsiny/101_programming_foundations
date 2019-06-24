@@ -89,16 +89,23 @@ end
 
 def compute_total(hand)
   values = hand.map(&:first)
-  total = 0
+  total = sum_card_values(values)
+  total = correct_total_with_aces(values, total)
+  total
+end
 
+def sum_card_values(values)
+  total = 0
   values.map do |value|
     total += compute_value(value)
   end
+  total
+end
 
+def correct_total_with_aces(values, total)
   values.select { |value| value == 'Ace' }.count.times do
     total -= 10 if total > MAX_POINTS
   end
-
   total
 end
 
@@ -110,7 +117,12 @@ def busted?(total)
   total > MAX_POINTS
 end
 
-def compare_hands(player_total, dealer_total)
+def player_hits(deck, hand, player_string)
+  deal_cards(deck, hand)
+  display_last_card(hand, player_string)
+end
+
+def determine_winner(player_total, dealer_total)
   if player_total == dealer_total
     'None'
   elsif dealer_total <= MAX_POINTS
@@ -181,8 +193,7 @@ loop do
         answer = gets.chomp
         break if VALID_STAY_ANSWERS.include?(answer)
 
-        deal_cards(deck, player_hand)
-        display_last_card(player_hand, 'You')
+        player_hits(deck, player_hand, 'You')
         player_total = compute_total(player_hand)
         display_points(player_total)
         break if busted?(player_total)
@@ -199,10 +210,8 @@ loop do
       loop do
         dealer_total = compute_total(dealer_hand)
         break if dealer_total >= MAX_DEAL_POINTS
-
         prompt 'Dealer hits...'
-        deal_cards(deck, dealer_hand)
-        display_last_card(dealer_hand, 'The dealer')
+        player_hits(deck, dealer_hand, 'The dealer')
       end
 
       prompt "Let's reveal the cards..."
@@ -210,7 +219,7 @@ loop do
       clear_screen
 
       display_final_hands(player_hand, dealer_hand, player_total, dealer_total)
-      winner = compare_hands(player_total, dealer_total)
+      winner = determine_winner(player_total, dealer_total)
       add_to_score(winner, score)
       announce_winner(winner)
       break
