@@ -1,12 +1,16 @@
-SUITS = ['Spades ♠', 'Hearts ♥', 'Diamonds ♦', 'Clubs ♣']
-VALUES = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
-HEADS = %w(Jack Queen King)
-VALID_STAY_ANSWERS = %w(stay s st sta)
-VALID_YES_ANSWERS = %w(y yes yeah)
-MAX_POINTS = 21
+SUITS   = ['Spades ♠', 'Hearts ♥', 'Diamonds ♦', 'Clubs ♣']
+VALUES  = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
+HEADS   = %w(Jack Queen King)
+
+VALID_STAY_ANSWERS  = %w(stay s st sta)
+VALID_HIT_ANSWERS   = %w(h hi hit hitt)
+VALID_YES_ANSWERS   = %w(y yes yeah)
+VALID_NO_ANSWERS    = %w(n no nope nah nay)
+
+MAX_POINTS      = 21
 MAX_DEAL_POINTS = 17
-NUMBER_OF_WINS = 5
-WAITING_TIME = 1.5
+NUMBER_OF_WINS  = 1
+WAITING_TIME    = 1.5
 DIVIDER = '--------------------------'
 
 def prompt(message)
@@ -149,10 +153,14 @@ def display_score(score)
 end
 
 def play_again?
-  prompt "Do you want to play again? (y/n)"
-  answer = gets.chomp.downcase
-  clear_screen
-  VALID_YES_ANSWERS.include?(answer)
+  loop do
+    prompt "Do you want to play again? (y/n)"
+    answer = gets.chomp.downcase
+    clear_screen
+    break true if VALID_YES_ANSWERS.include?(answer)
+    break false if VALID_NO_ANSWERS.include?(answer)
+    prompt 'Not a valid choice!'
+  end
 end
 
 def winner?(score)
@@ -189,14 +197,17 @@ loop do
 
       # Player's turn
       loop do
-        prompt 'Do you hit or stay?'
-        answer = gets.chomp
+        prompt 'Do you hit or stay? (h/s)'
+        answer = gets.chomp.downcase
         break if VALID_STAY_ANSWERS.include?(answer)
-
-        player_hits(deck, player_hand, 'You')
-        player_total = compute_total(player_hand)
-        display_points(player_total)
-        break if busted?(player_total)
+        if VALID_HIT_ANSWERS.include?(answer)
+          player_hits(deck, player_hand, 'You')
+          player_total = compute_total(player_hand)
+          display_points(player_total)
+          break if busted?(player_total)
+        else
+          prompt 'Not a valid choice!'
+        end
       end
 
       if busted?(player_total)
