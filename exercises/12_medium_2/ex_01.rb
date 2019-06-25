@@ -34,20 +34,9 @@ MSG
 
 def longest_sentence(text)
   split_text = text.split(/\.|\?|!/)
-  longest_sentence = split_text.max { |a, b| a.length <=> b.length }
+  longest_sentence = split_text.max_by(&:length)
   puts longest_sentence.strip
   puts longest_sentence.split.length
 end
 
 longest_sentence(text)
-
-# With separate text file
-
-sample_text = File.read('ex_01_sample_text.txt')
-sentences = sample_text.split(/|.|\?|!/)
-largest_sentence = sentences.max_by { |sentence| sentence.split.size }
-largest_sentence = largest_sentence.strip
-number_of_words = largest_sentence.split.size
-
-puts "#{largest_sentence}"
-puts "Containing #{number_of_words} words"
