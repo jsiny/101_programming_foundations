@@ -16,3 +16,16 @@ p block_word?('BATCH')  == true
 p block_word?('BUTCH')  == false
 p block_word?('butch')  == false
 p block_word?('jest')   == true
+
+# Shorter method
+
+BLOCKS = %w(BO XK DQ CP NA GT RE FS JW HU VI LY ZM).freeze
+
+def block_word_2?(word)
+  BLOCKS.none? { |block| word.upcase.count(block) >= 2 }
+end
+
+p block_word_2?('BATCH')  == true
+p block_word_2?('BUTCH')  == false
+p block_word_2?('butch')  == false
+p block_word_2?('jest')   == true
