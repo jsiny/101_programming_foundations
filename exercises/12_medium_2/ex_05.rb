@@ -14,11 +14,8 @@ def triangle(a, b, c)
 end
 
 def valid_triangle?(sides)
-  if sides.include?(0)
-    false
-  else
-    sides.sum > 2 * sides.max
-  end
+  return false if sides.include?(0)
+  sides.sum > 2 * sides.max
 end
 
 p triangle(3, 3, 3) == :equilateral
