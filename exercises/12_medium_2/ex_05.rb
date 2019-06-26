@@ -1,13 +1,3 @@
-# Triangles
-# - Equilateral: 3 sides are equal
-# - Isosceles: 2 sides are equal length and third is different
-# - Scalene: 3 sides are of different length
-
-# Valid triangle
-# 1. The sum of the lengths of the two shortest sides must be
-# greater than the length of the longest side
-# 2. All sides must have length greater then 0
-
 def triangle(a, b, c)
   if valid_triangle?(a, b, c)
     return :equilateral if a == b && a == c
@@ -19,13 +9,12 @@ def triangle(a, b, c)
 end
 
 def valid_triangle?(a, b, c)
-  if (a || b || c).zero?
+  sides = [a, b, c]
+
+  if sides.include?(0)
     false
   else
-    max = [a, b, c].max
-    min = [a, b, c].min(2).sum
-
-    min > max
+    sides.sum > 2 * sides.max
   end
 end
 
