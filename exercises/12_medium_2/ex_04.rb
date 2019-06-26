@@ -1,45 +1,49 @@
-# def balanced_1?(string)
-#   has_opening = 0
-#   has_closing = 0
+def balanced_1?(string)
+  has_opening = 0
+  has_closing = 0
 
-#   string.chars.each do |char|
-#     has_opening += 1 if char == '('
-#     has_closing += 1 if char == ')'
-#     break if has_closing > has_opening
-#   end
+  string.chars.each do |char|
+    has_opening += 1 if char == '('
+    has_closing += 1 if char == ')'
+    break if has_closing > has_opening
+  end
 
-#   has_opening == has_closing
-# end
+  has_opening == has_closing
+end
 
-# p balanced_1?('What (is) this?') == true
-# p balanced_1?('What is) this?') == false
-# p balanced_1?('What (is this?') == false
-# p balanced_1?('((What) (is this))?') == true
-# p balanced_1?('((What)) (is this))?') == false
-# p balanced_1?('Hey!') == true
-# p balanced_1?(')Hey!(') == false
-# p balanced_1?('What ((is))) up(') == false
+p balanced_1?('What (is) this?') == true
+p balanced_1?('What is) this?') == false
+p balanced_1?('What (is this?') == false
+p balanced_1?('((What) (is this))?') == true
+p balanced_1?('((What)) (is this))?') == false
+p balanced_1?('Hey!') == true
+p balanced_1?(')Hey!(') == false
+p balanced_1?('What ((is))) up(') == false
 
-# # Shorter method
+puts '--------'
 
-# def balanced_2?(string)
-#   parentheses = 0
-#   string.each_char do |char|
-#     parentheses += 1 if char == '('
-#     parentheses -= 1 if char == ')'
-#     break if parentheses < 0
-#   end
-#   parentheses.zero?
-# end
+# Shorter method
 
-# p balanced_2?('What (is) this?') == true
-# p balanced_2?('What is) this?') == false
-# p balanced_2?('What (is this?') == false
-# p balanced_2?('((What) (is this))?') == true
-# p balanced_2?('((What)) (is this))?') == false
-# p balanced_2?('Hey!') == true
-# p balanced_2?(')Hey!(') == false
-# p balanced_2?('What ((is))) up(') == false
+def balanced_2?(string)
+  parentheses = 0
+  string.each_char do |char|
+    parentheses += 1 if char == '('
+    parentheses -= 1 if char == ')'
+    break if parentheses < 0
+  end
+  parentheses.zero?
+end
+
+p balanced_2?('What (is) this?') == true
+p balanced_2?('What is) this?') == false
+p balanced_2?('What (is this?') == false
+p balanced_2?('((What) (is this))?') == true
+p balanced_2?('((What)) (is this))?') == false
+p balanced_2?('Hey!') == true
+p balanced_2?(')Hey!(') == false
+p balanced_2?('What ((is))) up(') == false
+
+puts '--------'
 
 # Further Exploration
 
