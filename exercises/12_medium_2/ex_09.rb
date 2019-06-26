@@ -1,15 +1,15 @@
 def bubble_sort!(array)
   loop do
-    number_of_swaps = 0
+    swapped = false
 
     array.each_index do |i|
       if (array[i] <=> array[i + 1]) == 1
-        number_of_swaps += 1
+        swapped = true
         array[i], array[i + 1] = array[i + 1], array[i]
       end
     end
 
-    break if number_of_swaps.zero?
+    break unless swapped
   end
 end
 
