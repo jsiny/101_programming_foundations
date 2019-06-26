@@ -19,3 +19,24 @@ p balanced?('((What)) (is this))?') == false
 p balanced?('Hey!') == true
 p balanced?(')Hey!(') == false
 p balanced?('What ((is))) up(') == false
+
+# Shorter method
+
+def balanced_2?(string)
+  parentheses = 0
+  string.each_char do |char|
+    parentheses += 1 if char == '('
+    parentheses -= 1 if char == ')'
+    break if parentheses < 0
+  end
+  parentheses.zero?
+end
+
+p balanced_2?('What (is) this?') == true
+p balanced_2?('What is) this?') == false
+p balanced_2?('What (is this?') == false
+p balanced_2?('((What) (is this))?') == true
+p balanced_2?('((What)) (is this))?') == false
+p balanced_2?('Hey!') == true
+p balanced_2?(')Hey!(') == false
+p balanced_2?('What ((is))) up(') == false
