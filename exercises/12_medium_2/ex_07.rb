@@ -4,7 +4,7 @@ def friday_13th(year)
   unlucky_days = 0
   thirteenth = Date.new(year, 1, 13)
   12.times do
-    unlucky_days += 1 if thirteen.friday?
+    unlucky_days += 1 if thirteenth.friday?
     thirteenth = thirteenth.next_month
   end
 
