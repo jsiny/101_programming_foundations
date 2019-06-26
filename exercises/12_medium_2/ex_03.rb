@@ -1,21 +1,12 @@
 def letter_percentages(string)
   content = { lowercase: 0, uppercase: 0, neither: 0 }
-  sort_according_to_case(string, content)
+  content[:lowercase] = string.chars.count { |char| char =~ /[a-z]/ }
+  content[:uppercase] = string.chars.count { |char| char =~ /[A-Z]/ }
+  content[:neither]   = string.chars.count { |char| char =~ /[^a-zA-Z]/ }
+
   length = string.size.to_f
   content.each_key do |k|
     convert_to_percentage(content, k, length)
-  end
-end
-
-def sort_according_to_case(string, content)
-  string.chars.each do |char|
-    if char =~ /[a-z]/
-      content[:lowercase] += 1
-    elsif char =~ /[A-Z]/
-      content[:uppercase] += 1
-    else
-      content[:neither] += 1
-    end
   end
 end
 
