@@ -1,16 +1,19 @@
 def triangle(a, b, c)
-  if valid_triangle?(a, b, c)
-    return :equilateral if a == b && a == c
-    return :scalene if a != b && a != c
-    :isosceles
+  sides = [a, b, c]
+
+  if valid_triangle?(sides)
+
+    case sides.uniq.size
+    when 1 then :equilateral
+    when 2 then :isosceles
+    when 3 then :scalene
+    end
   else
     :invalid
   end
 end
 
-def valid_triangle?(a, b, c)
-  sides = [a, b, c]
-
+def valid_triangle?(sides)
   if sides.include?(0)
     false
   else
