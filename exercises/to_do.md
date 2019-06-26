@@ -19,3 +19,4 @@
 - [ ] Ex 11.4 (1000 Lights) with **Further Exploration** - First done: 18/06/2019
 - [ ] Ex 11.9 (Fibonacci Numbers - Procedural) - First done: 21/06/2019
 - [ ] Ex 11.10 (Fibonacci Numbers - Last Digit) - First done: 21/06/2019
+- [ ] Ex 12.7 (Unlucky Days) with **Further Exploration** - First done: 26/06/2019
