@@ -2,14 +2,11 @@
 def triangle(a, b, c)
   angles = [a, b, c]
 
-  if angles.sum != 180 || angles.include?(0)
-    :invalid
-  else
-    case
-    when angles.include?(90)                then :right
-    when angles.all? { |angle| angle < 90 } then :acute
-    when angles.any? { |angle| angle > 90 } then :obtuse
-    end
+  case
+  when angles.sum != 180 || angles.include?(0)  then :invalid
+  when angles.include?(90)                      then :right
+  when angles.all? { |angle| angle < 90 }       then :acute
+  when angles.any? { |angle| angle > 90 }       then :obtuse
   end
 end
 # rubocop:enable Style/EmptyCaseCondition
