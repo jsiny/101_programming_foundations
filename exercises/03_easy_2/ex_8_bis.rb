@@ -1,35 +1,51 @@
+VALID_OPERATIONS = %w(s p).freeze
+
 def sum_or_product
-  puts '>> Please enter an integer greater than 0'
-  n = gets.to_i
-
-  puts ">> Enter 's' to compute the sum, 'p' to compute the product."
-  operation = gets.chomp
-
+  n = valid_integer
+  operation = valid_operation
   display_result(operation, n)
 end
 
+def valid_integer
+  n = 0
+
+  loop do
+    puts '>> Please enter an integer greater than 0'
+    n = gets.chomp
+    break if n.to_i.to_s == n && n.to_i > 0
+    puts '>> Invalid input'
+  end
+  n.to_i
+end
+
+def valid_operation
+  operation = ''
+
+  loop do
+    puts ">> Enter 's' to compute the sum, 'p' to compute the product."
+    operation = gets.chomp.downcase
+    break if VALID_OPERATIONS.include?(operation)
+    puts '>> Invalid input'
+  end
+  operation
+end
+
 def sum(n)
-  sum = 0
-  (1..n).each { |i| sum += i }
-  sum
+  (1..n).inject(:+)
 end
 
 def product(n)
-  product = 1
-  (1..n).each { |i| product *= i }
-  product
+  (1..n).inject(1, :*)
 end
 
 def display_result(operation, n)
   case operation
   when 's'
     result = sum(n)
-    puts "The sum of the integers between 1 and #{n} is #{result}."
+    puts ">> The sum of the integers between 1 and #{n} is #{result}."
   when 'p'
     result = product(n)
-    puts "The product of the integers between 1 and #{n} is #{result}."
-  else
-    puts "Sorry, I didn't understand your request."
+    puts ">> The product of the integers between 1 and #{n} is #{result}."
   end
 end
 
