@@ -11,10 +11,8 @@ DIGITS = {  '1' => 1,
 
 def string_to_integer(string)
   integer = 0
-  number_of_digits = 1
-  string.chars.reverse.each do |string_digit|
-    integer += DIGITS[string_digit] * number_of_digits
-    number_of_digits *= 10
+  string.chars.reverse.each_with_index do |string_digit, index|
+    integer += DIGITS[string_digit] * (10**index)
   end
   integer
 end
