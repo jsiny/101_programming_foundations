@@ -22,3 +22,15 @@ end
 p string_to_signed_integer('4321') == 4321
 p string_to_signed_integer('-570') == -570
 p string_to_signed_integer('+100') == 100
+
+# Further Exploration
+
+def string_to_signed_int(string)
+  sign = string.slice!(0) if %w(+ -).include?(string[0])
+  absolute_value = string_to_integer(string)
+  sign == '-' ? (0 - absolute_value) : absolute_value
+end
+
+p string_to_signed_int('4321') == 4321
+p string_to_signed_int('-570') == -570
+p string_to_signed_int('+100') == 100
