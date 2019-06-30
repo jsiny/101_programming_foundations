@@ -8,9 +8,9 @@
 - [x] Ex 4.5 (Squaring an Argument) with **Further Exploration** - First done: 23/05/19
 - [x] Ex 4.9 (Palindromic Strings Part 2) with **Further Exploration** - First done: 26/05/2019
 - [x] Ex 5.5 (Multiples of 3 and 5) with **Further Exploration** - First done: 27/05/2019
-- [ ] Ex 5.7 (Convert a String to a Number!) - First done: 27/05/2019
-- [ ] Ex 5.8 (Convert a String to a Signed Number!) with **Further Exploration** - First done: 27/05/2019
-- [ ] Ex 6.2 (After Midnight Part 1) - First done: 30/05/2019
+- [x] Ex 5.7 (Convert a String to a Number!) - First done: 27/05/2019
+- [x] Ex 5.8 (Convert a String to a Signed Number!) with **Further Exploration** - First done: 27/05/2019
+- [x] Ex 6.2 (After Midnight Part 1) - First done: 30/05/2019
 - [ ] Ex 6.3 (After Midnigth Part 2) with **Further Exploration** - First done: 30/05/2019
 - [ ] Ex 7.1 (Cute angles) with **Further Exploration** - First done: 04/06/2019
 - [ ] Ex 8.5 (Staggered Caps Part 1) with **Further Exploration** - Fist done: 10/06/2019
