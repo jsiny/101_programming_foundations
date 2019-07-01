@@ -11,10 +11,10 @@
 - [x] Ex 5.7 (Convert a String to a Number!) - First done: 27/05/2019
 - [x] Ex 5.8 (Convert a String to a Signed Number!) with **Further Exploration** - First done: 27/05/2019
 - [x] Ex 6.2 (After Midnight Part 1) - First done: 30/05/2019
-- [ ] Ex 6.3 (After Midnigth Part 2) with **Further Exploration** - First done: 30/05/2019
-- [ ] Ex 7.1 (Cute angles) with **Further Exploration** - First done: 04/06/2019
-- [ ] Ex 8.5 (Staggered Caps Part 1) with **Further Exploration** - Fist done: 10/06/2019
-- [ ] Practice Problem 5.5.16 (UUID) - First done: 15/06/2019
+- [x] Ex 6.3 (After Midnigth Part 2) with **Further Exploration** - First done: 30/05/2019
+- [x] Ex 7.1 (Cute angles) with **Further Exploration** - First done: 04/06/2019
+- [x] Ex 8.5 (Staggered Caps Part 1) with **Further Exploration** - Fist done: 10/06/2019
+- [x] Practice Problem 5.5.16 (UUID) - First done: 15/06/2019
 - [ ] Ex 11.3 (Rotation Part 3) with **Further Exploration** - First done: 17/06/2019
 - [ ] Ex 11.4 (1000 Lights) with **Further Exploration** - First done: 18/06/2019
 - [ ] Ex 11.9 (Fibonacci Numbers - Procedural) - First done: 21/06/2019
