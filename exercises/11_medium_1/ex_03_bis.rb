@@ -24,3 +24,17 @@ p max_rotation(3) == 3
 p max_rotation(35) == 53
 p max_rotation(105) == 15 # the leading zero gets dropped
 p max_rotation(8_703_529_146) == 7_321_609_845
+
+# Further Exploration
+
+def max_rotation_1(number)
+  result = number.to_s.chars
+  result.size.times { |digit| result << result.delete_at(digit) }
+  result.join('').to_i
+end
+
+p max_rotation_1(735_291) == 321_579
+p max_rotation_1(3) == 3
+p max_rotation_1(35) == 53
+p max_rotation_1(105) == 15 # the leading zero gets dropped
+p max_rotation_1(8_703_529_146) == 7_321_609_845
