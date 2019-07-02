@@ -17,6 +17,6 @@
 - [x] Practice Problem 5.5.16 (UUID) - First done: 15/06/2019
 - [x] Ex 11.3 (Rotation Part 3) with **Further Exploration** - First done: 17/06/2019
 - [x] Ex 11.4 (1000 Lights) with **Further Exploration** - First done: 18/06/2019
-- [ ] Ex 11.9 (Fibonacci Numbers - Procedural) - First done: 21/06/2019
-- [ ] Ex 11.10 (Fibonacci Numbers - Last Digit) - First done: 21/06/2019
-- [ ] Ex 12.7 (Unlucky Days) with **Further Exploration** - First done: 26/06/2019
+- [x] Ex 11.9 (Fibonacci Numbers - Procedural) - First done: 21/06/2019
+- [x] Ex 11.10 (Fibonacci Numbers - Last Digit) - First done: 21/06/2019
+- [x] Ex 12.7 (Unlucky Days) with **Further Exploration** - First done: 26/06/2019
