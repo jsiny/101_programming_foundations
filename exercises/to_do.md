@@ -20,3 +20,4 @@
 - [x] Ex 11.9 (Fibonacci Numbers - Procedural) - First done: 21/06/2019
 - [x] Ex 11.10 (Fibonacci Numbers - Last Digit) - First done: 21/06/2019
 - [x] Ex 12.7 (Unlucky Days) with **Further Exploration** - First done: 26/06/2019
+- [ ] Ex 13.3 (Transpose 3x3) with **Further Exploration** - First done: 06/07/2019
