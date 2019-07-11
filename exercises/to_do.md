@@ -22,3 +22,4 @@
 - [x] Ex 12.7 (Unlucky Days) with **Further Exploration** - First done: 26/06/2019
 - [ ] Ex 13.3 (Transpose 3x3) with **Further Exploration** - First done: 06/07/2019
 - [ ] Ex 13.5 (Rotating Matrices) with **Further Exploration** - First done: 08/07/2019
+- [ ] Ex 13.7 (Merge Sorted Lists) - First done: 11/07/2019
