@@ -1,21 +1,20 @@
-def arithmetic
-  puts '==> Enter the first number:'
-  first = gets.chomp.to_i
+def ask_number
+  puts '==> Enter a number:'
+  gets.chomp.to_i
+end
 
-  puts '==> Enter the second number:'
-  second = gets.chomp.to_i
+def arithmetic
+  first = ask_number
+  second = ask_number
 
   operations = {  '+' => first + second,
                   '-' => first - second,
                   '*' => first * second,
                   '/' => first / second,
                   '%' => first % second,
-                  '**' => first**second
-  }
+                  '**' => first**second }
 
-  operations.each do |k, v|
-    puts "#{first} #{k} #{second} = #{v}"
-  end
+  operations.each { |k, v| puts "#{first} #{k} #{second} = #{v}" }
 end
 
 arithmetic
