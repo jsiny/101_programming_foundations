@@ -1,0 +1,4 @@
+The %{adjective} %{noun} %{adverb}
+%{verb} the %{adjective}
+%{noun}, who %{adverb} %{verb} his
+%{noun} and looks around.
